@@ -1,5 +1,7 @@
 # 🚜 SOMPLE - Sistema de Predição de Risco para Equipamentos Agrícolas
 
+![Logo do projeto](img/logo.png)
+
 ## 1. Descrição do Problema
 
 O setor agrícola enfrenta um problema crítico relacionado à baixa previsibilidade de riscos operacionais envolvendo equipamentos.
@@ -13,6 +15,7 @@ Atualmente, decisões são tomadas de forma reativa, ou seja, apenas após a oco
 - Equipamento pesado em uso
 
 Resultado:
+
 - Atolamento
 - Danos mecânicos
 - Possível perda total do equipamento
@@ -50,16 +53,19 @@ A proposta consiste em um sistema inteligente de **previsão de risco operaciona
 ## 3. Personas (Usuários)
 
 ### Operador
+
 - Atua diretamente no campo
 - Precisa de alertas simples e rápidos
 - Objetivo: evitar riscos durante a operação
 
 ### Gestor
+
 - Responsável pela operação agrícola
 - Precisa reduzir custos e falhas
 - Utiliza dashboards para tomada de decisão
 
 ### Seguradora
+
 - Avalia risco e sinistros
 - Precisa prever perdas
 - Utiliza dados para análise e precificação
@@ -70,27 +76,27 @@ A proposta consiste em um sistema inteligente de **previsão de risco operaciona
 
 ### Variáveis utilizadas
 
-| Variável | Descrição |
-|---|---|
-| chuva_mm | Quantidade de chuva |
-| tipo_solo | Tipo de solo (argiloso, arenoso, etc) |
-| umidade_solo | Percentual de umidade do solo |
-| inclinacao | Inclinação do terreno |
-| tipo_operacao | Tipo de atividade (colheita, transporte, etc) |
-| peso_equipamento | Peso em toneladas |
-| horas_uso | Tempo de uso do equipamento |
-| manutencao | Situação da manutenção |
-| falha | Ocorrência de falha |
+| Variável         | Descrição                                     |
+| ---------------- | --------------------------------------------- |
+| chuva_mm         | Quantidade de chuva                           |
+| tipo_solo        | Tipo de solo (argiloso, arenoso, etc)         |
+| umidade_solo     | Percentual de umidade do solo                 |
+| inclinacao       | Inclinação do terreno                         |
+| tipo_operacao    | Tipo de atividade (colheita, transporte, etc) |
+| peso_equipamento | Peso em toneladas                             |
+| horas_uso        | Tempo de uso do equipamento                   |
+| manutencao       | Situação da manutenção                        |
+| falha            | Ocorrência de falha                           |
 
 ---
 
 ### Exemplo de Dataset
 
 | chuva_mm | tipo_solo | umidade_solo | inclinacao | tipo_operacao | peso | manutencao | risco |
-|---|---|---|---|---|---|---|---|
-| 30 | argiloso | 80 | 12 | colheita | 9 | nao | alto |
-| 5 | arenoso | 20 | 3 | transporte | 6 | sim | baixo |
-| 20 | argiloso | 60 | 8 | pulverizacao | 7 | sim | medio |
+| -------- | --------- | ------------ | ---------- | ------------- | ---- | ---------- | ----- |
+| 30       | argiloso  | 80           | 12         | colheita      | 9    | nao        | alto  |
+| 5        | arenoso   | 20           | 3          | transporte    | 6    | sim        | baixo |
+| 20       | argiloso  | 60           | 8          | pulverizacao  | 7    | sim        | medio |
 
 ---
 
@@ -141,19 +147,23 @@ A classificação permite decisões rápidas e práticas no campo, sendo mais ef
 ## 7. Planejamento das Próximas Etapas
 
 ### Sprint 2
+
 - Criação do dataset completo
 - Simulação de dados
 - Definição de regras de risco
 
 ### Sprint 3
+
 - Treinamento do modelo de IA
 - Validação dos resultados
 
 ### Sprint 4
+
 - Desenvolvimento da API
 - Integração com frontend
 
 ### Sprint 5
+
 - Construção do dashboard
 - Testes finais
 - Ajustes e melhorias
@@ -171,11 +181,11 @@ A solução considera:
 
 ### Perfis
 
-| Perfil | Permissão |
-|---|---|
-| Operador | Visualização de alertas |
-| Gestor | Acesso ao dashboard completo |
-| Seguradora | Acesso a dados analíticos |
+| Perfil     | Permissão                    |
+| ---------- | ---------------------------- |
+| Operador   | Visualização de alertas      |
+| Gestor     | Acesso ao dashboard completo |
+| Seguradora | Acesso a dados analíticos    |
 
 ---
 
@@ -195,7 +205,7 @@ Os dados utilizados nesta fase são simulados, mas baseados em cenários reais.
 
 ## 10. Vídeo de Apresentação
 
-
+https://youtu.be/04eJA7Vp_PU
 
 ---
 
