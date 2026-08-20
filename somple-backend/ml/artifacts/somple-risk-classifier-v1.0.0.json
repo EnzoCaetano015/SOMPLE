@@ -1,0 +1,31 @@
+{
+  "model_name": "somple-risk-classifier",
+  "version": "1.0.0",
+  "features": [
+    "chuva_mm",
+    "temperatura_c",
+    "umidade_solo",
+    "tipo_solo",
+    "inclinacao_graus",
+    "distancia_agua_m",
+    "tipo_operacao",
+    "peso_equipamento_t",
+    "dias_desde_manutencao",
+    "incidentes_previos"
+  ],
+  "classes": [
+    "critical",
+    "high",
+    "low",
+    "medium"
+  ],
+  "metrics": {
+    "accuracy": 0.8444,
+    "regressor_mae": 7.7862,
+    "regressor_r2": 0.686
+  },
+  "score_method": "regressor",
+  "trained_at": "2026-08-18T02:16:06.589058+00:00",
+  "dataset_version": "sprint2-v1",
+  "artifact_sha256": "fa63955d4b4d513acfaf3eebd82a5b0ba4c9f0451dc0bda340c3f3b069686244"
+}

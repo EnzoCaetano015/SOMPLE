@@ -1,0 +1,181 @@
+id_registro,equipamento_id,regiao,chuva_mm,temperatura_c,umidade_solo,tipo_solo,inclinacao_graus,distancia_agua_m,tipo_operacao,peso_equipamento_t,dias_desde_manutencao,incidentes_previos,score_risco,nivel_risco,alerta,recomendacao
+1,CL-310,Talhao Leste,8.7,33.3,65,argiloso,11.8,10,plantio,11.2,42,0,99,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+2,PV-420,Talhao Norte,24.9,30.3,57,argiloso,0.4,49,colheita,7.4,84,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+3,CL-310,Talhao Norte,52.7,22.4,98,argiloso,9.9,22,plantio,12.2,146,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+4,PV-420,Talhao Norte,14.8,25.5,85,argiloso,9.9,163,colheita,10.5,79,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+5,PV-420,Talhao Sul,0.0,23.4,31,arenoso,13.9,278,transporte,12.2,152,2,85,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+6,PV-420,Talhao Oeste,19.5,23.2,60,arenoso,2.8,59,colheita,7.9,74,0,79,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+7,CL-310,Talhao Norte,29.6,29.8,71,argiloso,8.9,347,plantio,11.3,83,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+8,PV-420,Talhao Oeste,36.5,28.8,98,argiloso,0.0,159,plantio,11.3,131,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+9,CL-310,Talhao Leste,20.2,26.8,62,argiloso,12.8,273,pulverizacao,5.6,110,1,95,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+10,CL-310,Talhao Sul,23.6,28.2,81,argiloso,12.5,115,colheita,8.2,43,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+11,TR-100,Talhao Leste,4.7,26.0,42,misto,10.3,344,colheita,7.3,58,0,50,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+12,TR-200,Talhao Oeste,37.3,24.3,74,arenoso,5.4,81,transporte,7.7,16,0,90,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+13,PL-510,Talhao Norte,35.0,26.7,95,argiloso,9.7,11,colheita,9.6,124,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+14,CL-310,Talhao Oeste,39.9,30.2,90,arenoso,3.5,151,transporte,9.6,98,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+15,PL-510,Talhao Leste,2.1,33.8,38,misto,12.4,10,transporte,6.3,117,0,75,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+16,TR-100,Talhao Leste,21.4,23.9,59,siltoso,6.4,853,plantio,6.6,120,2,84,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+17,PV-420,Talhao Norte,0.0,28.0,43,arenoso,11.9,136,colheita,10.3,161,3,97,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+18,PV-420,Talhao Sul,5.8,30.4,49,siltoso,16.9,153,plantio,12.3,54,0,86,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+19,PV-420,Talhao Norte,15.8,27.0,56,arenoso,6.1,65,transporte,10.5,131,0,93,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+20,PL-510,Talhao Leste,41.3,28.1,80,arenoso,12.1,522,transporte,9.1,91,0,97,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+21,PV-420,Talhao Sul,1.1,26.5,47,siltoso,11.7,1122,plantio,11.3,56,0,52,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+22,TR-100,Talhao Sul,2.9,27.7,39,misto,9.9,278,colheita,9.4,178,0,62,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+23,TR-100,Talhao Norte,18.3,23.2,64,arenoso,14.9,114,pulverizacao,11.0,156,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+24,TR-100,Talhao Oeste,31.2,30.8,70,arenoso,11.3,728,colheita,7.5,21,1,83,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+25,PL-510,Talhao Sul,49.8,25.3,80,argiloso,8.4,12,pulverizacao,7.4,27,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+26,PV-420,Talhao Sul,20.6,27.2,47,siltoso,4.7,256,transporte,10.3,175,1,97,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+27,PV-420,Talhao Sul,14.1,23.9,75,argiloso,16.3,62,colheita,6.5,101,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+28,PL-510,Talhao Leste,18.5,27.3,75,siltoso,5.0,57,colheita,7.2,21,0,85,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+29,PL-510,Talhao Leste,15.4,25.7,78,argiloso,10.6,10,plantio,8.5,99,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+30,PV-420,Talhao Oeste,18.1,30.0,67,arenoso,17.0,45,pulverizacao,11.1,114,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+31,PV-420,Talhao Leste,6.0,25.3,38,siltoso,7.4,317,colheita,9.7,72,1,67,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+32,TR-200,Talhao Norte,21.7,29.1,56,argiloso,7.1,13,transporte,12.2,100,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+33,PV-420,Talhao Sul,33.3,29.0,77,arenoso,0.4,666,transporte,6.4,123,2,90,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+34,PV-420,Talhao Oeste,29.6,20.8,58,argiloso,3.8,34,colheita,12.2,153,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+35,TR-200,Talhao Leste,11.6,31.5,72,misto,18.7,78,plantio,10.8,24,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+36,CL-310,Talhao Sul,17.9,27.4,74,misto,8.4,601,transporte,6.3,74,3,92,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+37,PL-510,Talhao Norte,3.0,25.7,57,argiloso,10.3,786,transporte,7.3,128,1,75,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+38,CL-310,Talhao Leste,9.8,20.7,71,argiloso,5.9,171,transporte,10.4,139,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+39,TR-100,Talhao Leste,0.7,23.6,50,siltoso,7.8,248,transporte,10.9,176,1,80,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+40,CL-310,Talhao Oeste,20.0,24.2,74,argiloso,3.2,1808,pulverizacao,7.6,133,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+41,PV-420,Talhao Norte,12.3,23.6,47,misto,5.0,205,transporte,9.2,18,4,84,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+42,TR-100,Talhao Norte,18.1,29.3,77,misto,12.9,58,plantio,11.1,171,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+43,TR-200,Talhao Leste,22.4,31.7,60,arenoso,5.7,1440,colheita,9.3,71,4,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+44,CL-310,Talhao Leste,12.6,26.6,65,misto,7.7,660,pulverizacao,12.5,179,1,83,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+45,TR-100,Talhao Leste,10.2,23.5,35,siltoso,4.6,694,pulverizacao,4.9,52,0,31,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+46,TR-200,Talhao Oeste,29.3,24.7,67,arenoso,20.7,180,pulverizacao,9.6,145,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+47,TR-200,Talhao Sul,14.6,23.5,57,arenoso,8.6,427,transporte,8.1,164,0,81,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+48,TR-200,Talhao Oeste,25.6,28.8,71,arenoso,10.9,22,colheita,9.5,65,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+49,CL-310,Talhao Sul,19.8,23.4,39,arenoso,10.8,393,transporte,11.5,95,4,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+50,TR-200,Talhao Oeste,21.4,26.1,55,arenoso,7.6,262,transporte,7.3,161,0,85,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+51,TR-100,Talhao Sul,14.5,30.4,64,argiloso,4.9,455,colheita,6.2,69,1,80,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+52,PL-510,Talhao Sul,6.5,29.3,25,arenoso,9.6,236,transporte,5.4,83,1,56,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+53,TR-200,Talhao Leste,12.9,22.8,51,argiloso,4.7,130,colheita,11.6,108,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+54,TR-200,Talhao Leste,3.5,25.2,45,siltoso,15.9,45,colheita,7.4,118,1,99,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+55,TR-100,Talhao Norte,22.3,24.4,75,argiloso,5.6,68,colheita,5.9,161,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+56,TR-200,Talhao Oeste,17.2,24.7,56,arenoso,11.8,61,pulverizacao,11.9,102,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+57,PV-420,Talhao Leste,14.0,29.6,72,argiloso,3.9,249,pulverizacao,10.6,20,1,80,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+58,TR-200,Talhao Oeste,24.6,24.6,47,misto,11.8,377,pulverizacao,9.3,87,0,81,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+59,PV-420,Talhao Leste,24.0,27.3,76,argiloso,7.2,281,pulverizacao,5.6,144,0,95,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+60,CL-310,Talhao Sul,26.7,18.2,73,argiloso,9.8,692,transporte,11.0,81,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+61,TR-100,Talhao Norte,26.6,22.2,57,arenoso,0.0,250,colheita,6.3,99,0,70,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+62,PV-420,Talhao Leste,33.0,26.9,94,argiloso,13.3,446,transporte,12.5,136,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+63,TR-200,Talhao Sul,9.8,33.6,46,siltoso,7.8,35,transporte,7.5,84,1,93,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+64,PV-420,Talhao Oeste,1.8,32.3,73,arenoso,18.0,415,transporte,11.1,172,0,94,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+65,CL-310,Talhao Oeste,1.8,25.9,49,argiloso,5.8,427,transporte,5.3,165,2,75,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+66,TR-200,Talhao Norte,36.5,33.4,93,argiloso,5.4,898,plantio,8.1,24,4,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+67,PL-510,Talhao Leste,14.7,26.4,66,misto,5.9,535,colheita,7.2,74,1,68,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+68,TR-200,Talhao Leste,0.0,21.0,29,misto,6.7,198,colheita,5.9,92,0,47,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+69,TR-200,Talhao Oeste,27.0,27.3,47,misto,0.6,1224,transporte,9.0,155,1,79,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+70,CL-310,Talhao Leste,9.3,24.7,51,argiloso,13.6,208,transporte,7.5,151,1,95,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+71,PV-420,Talhao Norte,24.8,32.0,94,argiloso,0.0,55,colheita,11.4,170,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+72,PV-420,Talhao Oeste,8.7,30.7,79,argiloso,14.4,10,colheita,6.3,122,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+73,TR-100,Talhao Oeste,15.7,25.6,73,argiloso,6.9,91,pulverizacao,11.3,150,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+74,TR-200,Talhao Leste,6.1,32.5,38,siltoso,11.8,621,colheita,11.5,117,1,75,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+75,TR-200,Talhao Leste,0.0,20.8,53,misto,11.0,322,transporte,8.9,81,0,59,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+76,TR-200,Talhao Sul,7.5,30.9,52,misto,7.8,530,transporte,4.7,52,1,49,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+77,CL-310,Talhao Sul,6.5,27.1,43,arenoso,9.7,62,colheita,4.6,165,0,67,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+78,TR-100,Talhao Sul,18.9,25.1,41,arenoso,10.6,10,colheita,11.7,157,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+79,PL-510,Talhao Norte,2.0,19.6,48,arenoso,1.6,241,colheita,5.8,134,0,43,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+80,CL-310,Talhao Oeste,6.7,27.9,33,arenoso,10.2,311,plantio,7.7,171,0,55,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+81,CL-310,Talhao Leste,17.6,27.9,40,arenoso,9.2,1025,colheita,9.5,87,0,64,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+82,TR-200,Talhao Norte,41.9,29.8,84,argiloso,5.2,530,pulverizacao,6.7,108,0,87,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+83,PV-420,Talhao Sul,21.1,32.1,79,argiloso,11.4,424,transporte,12.3,163,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+84,TR-200,Talhao Oeste,15.7,30.3,52,siltoso,8.7,11,pulverizacao,6.9,166,4,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+85,CL-310,Talhao Sul,27.5,35.8,65,misto,9.7,346,transporte,9.0,89,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+86,TR-100,Talhao Oeste,0.0,24.4,29,arenoso,13.2,324,plantio,9.4,45,0,43,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+87,CL-310,Talhao Leste,22.6,24.9,62,misto,15.0,215,transporte,11.5,177,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+88,TR-100,Talhao Leste,33.0,19.6,66,arenoso,6.5,632,pulverizacao,9.2,53,3,91,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+89,PV-420,Talhao Oeste,19.1,29.3,62,argiloso,0.3,1331,plantio,9.3,163,4,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+90,PL-510,Talhao Leste,12.2,29.5,46,siltoso,5.5,42,colheita,7.6,11,3,96,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+91,TR-100,Talhao Norte,20.2,25.5,72,siltoso,2.1,468,pulverizacao,5.7,147,0,78,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+92,PL-510,Talhao Sul,50.3,18.0,98,argiloso,3.6,105,transporte,4.9,154,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+93,TR-200,Talhao Oeste,23.5,26.1,77,argiloso,8.5,250,plantio,5.4,161,4,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+94,CL-310,Talhao Sul,22.5,34.5,84,argiloso,12.1,258,plantio,10.4,96,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+95,PL-510,Talhao Leste,18.8,28.3,68,argiloso,4.9,69,plantio,12.2,86,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+96,TR-200,Talhao Oeste,15.5,33.3,74,argiloso,9.7,98,colheita,5.2,62,1,99,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+97,CL-310,Talhao Sul,19.3,26.8,73,argiloso,6.4,605,transporte,5.9,136,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+98,TR-100,Talhao Sul,27.9,24.2,73,argiloso,7.8,25,plantio,12.4,123,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+99,PL-510,Talhao Leste,0.0,25.2,55,arenoso,13.6,563,colheita,4.5,32,0,38,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+100,CL-310,Talhao Oeste,29.6,28.9,69,misto,10.9,86,colheita,11.4,173,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+101,TR-200,Talhao Oeste,0.0,30.8,36,siltoso,12.3,73,plantio,10.2,103,0,68,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+102,PL-510,Talhao Norte,9.0,26.4,45,arenoso,2.1,249,colheita,10.9,56,3,75,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+103,TR-100,Talhao Sul,12.1,24.3,39,misto,17.0,73,transporte,5.0,106,0,79,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+104,PL-510,Talhao Sul,8.6,23.3,30,siltoso,16.1,1213,pulverizacao,9.8,137,3,89,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+105,TR-100,Talhao Norte,25.3,27.7,73,misto,3.4,10,transporte,6.2,65,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+106,TR-100,Talhao Norte,14.8,21.5,47,misto,2.5,1251,colheita,10.0,148,0,63,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+107,TR-100,Talhao Leste,16.5,20.9,65,siltoso,12.3,903,plantio,9.5,142,1,93,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+108,TR-200,Talhao Sul,21.8,35.3,81,arenoso,4.6,246,pulverizacao,5.2,15,0,64,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+109,PV-420,Talhao Norte,18.2,29.1,74,argiloso,5.1,354,transporte,8.9,130,0,99,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+110,TR-200,Talhao Leste,14.5,25.0,56,misto,9.1,10,colheita,8.2,156,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+111,PV-420,Talhao Sul,0.0,27.9,32,siltoso,13.2,190,pulverizacao,8.4,157,3,90,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+112,PL-510,Talhao Oeste,21.8,24.3,45,arenoso,0.0,596,colheita,10.7,75,1,67,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+113,PL-510,Talhao Norte,16.8,26.6,33,arenoso,4.3,33,transporte,9.2,106,1,93,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+114,PV-420,Talhao Sul,6.1,33.9,70,argiloso,15.7,166,colheita,6.4,159,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+115,TR-100,Talhao Norte,45.4,35.8,88,argiloso,1.7,979,colheita,7.4,71,1,94,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+116,PV-420,Talhao Oeste,39.9,31.1,91,argiloso,9.2,76,colheita,6.7,14,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+117,PL-510,Talhao Norte,22.8,24.6,61,misto,8.0,52,plantio,12.2,5,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+118,CL-310,Talhao Sul,12.4,28.7,64,arenoso,0.0,44,colheita,5.6,169,2,95,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+119,PL-510,Talhao Oeste,29.2,30.2,72,argiloso,1.9,1269,transporte,4.6,47,2,87,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+120,TR-100,Talhao Sul,9.2,27.7,53,misto,11.8,933,pulverizacao,9.8,106,0,61,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+121,TR-100,Talhao Norte,2.6,26.0,65,argiloso,5.5,38,pulverizacao,10.6,166,0,94,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+122,PL-510,Talhao Leste,9.6,21.1,58,misto,3.5,345,colheita,9.5,111,1,73,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+123,TR-100,Talhao Leste,40.5,33.6,89,arenoso,13.0,318,transporte,7.5,156,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+124,PL-510,Talhao Leste,0.0,36.3,25,arenoso,11.6,477,pulverizacao,10.2,172,0,55,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+125,CL-310,Talhao Leste,19.0,24.0,75,argiloso,6.6,219,colheita,6.8,58,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+126,TR-200,Talhao Sul,25.0,24.6,48,arenoso,0.1,42,colheita,9.9,36,1,94,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+127,TR-200,Talhao Oeste,15.9,26.9,46,siltoso,10.8,541,transporte,4.8,115,3,89,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+128,TR-100,Talhao Sul,14.6,29.0,55,arenoso,1.5,174,pulverizacao,11.7,66,0,72,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+129,PV-420,Talhao Leste,23.6,24.3,57,siltoso,9.4,322,transporte,9.2,34,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+130,PL-510,Talhao Leste,11.8,24.2,51,misto,4.8,335,colheita,9.6,15,0,55,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+131,TR-200,Talhao Sul,42.1,33.8,98,argiloso,5.9,10,colheita,11.0,110,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+132,PL-510,Talhao Norte,5.0,20.5,55,misto,15.9,150,colheita,9.4,82,2,97,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+133,TR-200,Talhao Leste,16.4,19.0,50,siltoso,9.9,133,pulverizacao,12.5,120,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+134,PV-420,Talhao Sul,5.5,23.0,46,siltoso,11.1,253,colheita,8.1,137,0,72,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+135,PL-510,Talhao Oeste,7.6,27.3,34,siltoso,11.9,608,transporte,9.5,20,2,68,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+136,TR-200,Talhao Norte,28.0,23.9,85,argiloso,1.3,30,plantio,8.9,58,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+137,CL-310,Talhao Sul,18.7,28.0,83,arenoso,8.0,629,colheita,11.9,25,2,96,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+138,PV-420,Talhao Sul,20.8,26.3,66,arenoso,4.2,62,pulverizacao,7.3,175,1,94,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+139,PL-510,Talhao Oeste,13.7,16.9,62,siltoso,8.3,52,transporte,5.0,9,0,73,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+140,PV-420,Talhao Norte,20.1,29.9,60,misto,5.7,10,colheita,9.3,68,0,97,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+141,CL-310,Talhao Sul,7.2,27.6,42,arenoso,6.3,1358,colheita,5.6,26,0,31,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+142,PV-420,Talhao Oeste,17.3,20.9,71,argiloso,12.6,322,transporte,7.9,27,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+143,PV-420,Talhao Sul,7.9,29.2,37,arenoso,11.8,483,colheita,7.8,89,0,59,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+144,PL-510,Talhao Norte,15.4,30.7,71,argiloso,5.5,327,colheita,5.0,12,0,68,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+145,PL-510,Talhao Sul,21.9,29.9,95,argiloso,1.8,549,transporte,11.4,73,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+146,TR-100,Talhao Norte,25.5,28.3,69,argiloso,7.2,96,pulverizacao,11.1,91,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+147,PL-510,Talhao Leste,18.4,24.6,55,arenoso,7.6,12,pulverizacao,9.8,145,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+148,PV-420,Talhao Leste,0.0,24.6,55,argiloso,14.0,175,transporte,11.1,17,0,82,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+149,TR-100,Talhao Norte,33.4,22.0,84,argiloso,5.5,42,transporte,10.7,117,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+150,PV-420,Talhao Sul,39.5,25.5,98,argiloso,3.8,868,colheita,7.5,80,0,96,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+151,TR-100,Talhao Oeste,11.3,30.0,49,arenoso,6.2,98,transporte,9.6,43,4,99,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+152,CL-310,Talhao Oeste,0.0,28.3,44,siltoso,8.2,914,colheita,5.8,28,1,40,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+153,PV-420,Talhao Norte,14.4,32.9,40,siltoso,5.5,448,transporte,5.3,31,0,54,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+154,TR-200,Talhao Sul,11.9,26.2,62,arenoso,3.7,531,colheita,8.9,133,1,71,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+155,PV-420,Talhao Oeste,36.4,21.2,80,argiloso,2.5,53,colheita,11.5,179,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+156,CL-310,Talhao Sul,21.1,21.3,64,arenoso,0.0,392,colheita,9.5,67,2,86,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+157,CL-310,Talhao Oeste,15.4,26.1,93,argiloso,6.4,400,colheita,8.4,109,1,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+158,CL-310,Talhao Sul,35.1,31.3,71,argiloso,12.2,1325,colheita,11.1,96,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+159,PV-420,Talhao Norte,11.5,33.1,72,argiloso,11.2,2113,plantio,9.6,78,1,84,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+160,PV-420,Talhao Leste,11.3,28.2,42,siltoso,1.1,1285,colheita,10.1,107,1,63,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+161,PL-510,Talhao Oeste,7.0,26.2,35,siltoso,15.0,217,colheita,5.1,132,1,73,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+162,PV-420,Talhao Oeste,24.8,28.6,72,arenoso,5.1,353,plantio,5.1,14,0,64,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+163,TR-200,Talhao Oeste,26.3,22.7,75,argiloso,0.0,614,colheita,5.8,154,0,84,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+164,TR-200,Talhao Norte,0.0,26.3,49,arenoso,8.6,89,pulverizacao,8.9,27,3,70,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+165,TR-100,Talhao Norte,19.8,22.6,65,arenoso,10.8,274,transporte,12.3,111,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+166,TR-200,Talhao Norte,16.9,27.8,63,argiloso,13.7,244,colheita,11.4,131,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+167,TR-200,Talhao Norte,4.1,22.6,46,siltoso,6.9,360,colheita,5.3,155,0,58,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+168,PV-420,Talhao Leste,25.3,24.4,57,siltoso,7.7,509,colheita,6.6,33,0,71,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+169,PL-510,Talhao Leste,0.0,25.8,42,siltoso,0.2,1385,pulverizacao,4.7,16,0,11,baixo,Operação liberada com monitoramento padrão.,Manter operação planejada.
+170,PV-420,Talhao Leste,11.8,25.3,84,misto,13.7,493,plantio,6.1,96,0,78,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+171,TR-100,Talhao Leste,36.5,16.0,85,siltoso,13.3,269,colheita,9.4,68,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+172,PL-510,Talhao Oeste,52.5,23.2,98,argiloso,10.1,191,transporte,5.2,159,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+173,PL-510,Talhao Norte,13.0,23.3,58,arenoso,13.9,1925,plantio,9.7,27,1,68,alto,"Risco elevado: revisar rota, velocidade e condição do terreno.",Evitar áreas próximas à água e solicitar avaliação do gestor.
+174,CL-310,Talhao Norte,15.7,22.0,55,argiloso,3.0,826,colheita,10.6,177,3,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+175,CL-310,Talhao Oeste,0.7,23.0,34,siltoso,5.5,410,pulverizacao,5.3,46,0,29,baixo,Operação liberada com monitoramento padrão.,Manter operação planejada.
+176,TR-100,Talhao Leste,41.4,20.9,88,argiloso,14.2,607,transporte,12.3,115,0,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+177,PV-420,Talhao Leste,28.3,28.1,56,siltoso,6.7,85,pulverizacao,6.7,117,1,99,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+178,CL-310,Talhao Norte,2.0,31.1,37,arenoso,1.4,919,plantio,10.6,142,1,44,medio,Atenção: acompanhar clima e solo antes de continuar.,Reduzir velocidade e verificar umidade do solo.
+179,CL-310,Talhao Leste,25.3,20.8,83,argiloso,0.9,84,transporte,5.5,77,2,100,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
+180,TR-200,Talhao Sul,13.4,29.8,51,arenoso,5.8,114,plantio,10.5,145,0,81,critico,Operação não recomendada: adiar ou mudar rota imediatamente.,Bloquear operação até melhora das condições ambientais.
