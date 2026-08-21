@@ -507,90 +507,88 @@ No volume novo, o PostgreSQL executa automaticamente `001_schema.sql`, `002_inde
 
 ## Implantação na AWS — bônus
 
-> A AWS não é necessária para compreender a arquitetura principal. O repositório contém arquitetura-alvo e preparação para uma possível implantação.
+> A AWS não é necessária para compreender a arquitetura principal do SOMPLE. A Sprint 3 incluiu, como evolução adicional, uma implantação acadêmica do MVP no AWS Academy Learner Lab.
+
+É importante separar três conceitos:
+
+- **arquitetura de software:** organização entre frontend, backend, persistência, IA e infraestrutura;
+- **implantação realizada:** execução comprovada do MVP em uma instância Amazon EC2;
+- **arquitetura cloud alvo:** evolução planejada com serviços gerenciados e distribuição adequada para um cenário mais próximo de produção.
+
+### Implantação realizada na Sprint 3
+
+Para validar que o MVP não depende exclusivamente do ambiente local, foi provisionada no AWS Academy uma instância Amazon EC2 denominada `somple-server`, do tipo `t2.medium`. As evidências registram a instância no estado `Executando`, associada a VPC, subnet, Security Group e IPv4 público.
+
+A aplicação SOMPLE foi disponibilizada por esse endereço público: as rotas `/login` e `/dashboard` aparecem acessíveis pelo navegador, e o dashboard apresenta seis equipamentos monitorados.
 
 ```mermaid
 flowchart LR
-    U[Usuário] --> CF[CloudFront]
-    CF --> S3[S3 privado - React]
-    CF -->|/api/*| EC2[EC2 - Nginx + FastAPI]
-    EC2 --> RDS[(RDS PostgreSQL privado)]
-    EC2 --> CW[CloudWatch]
+    U[Usuário] -->|HTTP + IPv4 público| EC2[EC2 somple-server]
+    EC2 --> APP[Aplicação SOMPLE]
+    APP --> LOGIN[Login]
+    APP --> DASH[Dashboard]
 ```
 
-### Estado confirmado
+O acesso demonstrado utiliza **HTTP diretamente pelo IPv4 público da EC2**, condição adequada ao laboratório acadêmico, mas não à publicação produtiva. O IPv4 do AWS Academy pode mudar quando a instância ou a sessão do laboratório for interrompida ou recriada; por isso, ele não é apresentado como URL permanente.
 
-- `docker-compose.aws.yml` prepara backend e proxy Nginx para EC2;
-- `aws/ARCHITECTURE.md` descreve S3, CloudFront, EC2, RDS, CloudWatch e Security Groups como topologia recomendada;
-- o frontend gera build estático compatível com S3;
-- a API aceita `DATABASE_URL` para PostgreSQL externo.
+### Resultado da implantação
 
-### Estado não comprovado
+A execução em EC2 demonstrou que:
 
-Não há evidência versionada de recursos AWS provisionados, URLs públicas, pipeline de publicação ou arquivo `.env.aws.example`. A implantação deve ser tratada como **planejada/preparada**, não concluída.
+- a aplicação pode ser executada fora da máquina de desenvolvimento;
+- a interface pode ser acessada externamente;
+- a interface de autenticação e o dashboard estão disponíveis no ambiente publicado;
+- a separação arquitetural entre frontend e backend é preservada pelo projeto;
+- a configuração com containers favorece a portabilidade entre ambiente local e EC2.
 
-O Compose AWS exige `somple-infra/.env.aws`, não versionado, com variáveis como `APP_ENV`, `CORS_ORIGINS`, `DATABASE_URL`, `JWT_SECRET_KEY`, `JWT_ALGORITHM`, `JWT_EXP_HOURS` e `MODEL_NAME`.
+Não foram realizados benchmarks nem medições de disponibilidade ou escalabilidade.
 
-Após preparar o arquivo e provisionar RDS/EC2, a parte prevista para a EC2 é:
-
-```bash
-cd somple-infra
-docker compose -f docker-compose.aws.yml up -d --build
-docker compose -f docker-compose.aws.yml ps
-docker compose -f docker-compose.aws.yml exec backend python -m scripts.create_demo_data
-curl http://localhost/api/v1/health/ready
-```
-
-S3, CloudFront, DNS, certificados, RDS e Security Groups dependem dos recursos reais da conta acadêmica e ainda precisam de evidências.
 
 ## Evidências de execução
 
-Não existem capturas da Sprint 3 no repositório. Para evitar imagens falsas e links quebrados, os espaços abaixo indicam o que capturar. Estrutura sugerida:
+As evidências reais da implantação estão organizadas em `docs/evidencias/aws`. Account ID e identificadores pessoais do AWS Academy foram ocultados antes da publicação; dados técnicos úteis à avaliação, como nome e tipo da instância, rede e IPv4 público, foram preservados.
 
-```text
-docs/evidencias/
-├── local/
-├── aws/
-└── dashboard/
-```
+### Aplicação hospedada na AWS
 
-### Ambiente local
+<p align="center">
+  <img src="docs/evidencias/aws/01-dashboard-aws.png" width="1000" alt="Dashboard do SOMPLE acessado pelo IPv4 público da EC2">
+</p>
 
-- **Pendente — Docker Desktop:** três containers ativos.
-- **Pendente — terminal:** Compose e `docker compose ps`.
-- **Pendente — healthcheck:** `/health` e `/health/ready`.
-- **Pendente — carga:** mensagem `Demo data created.`.
-- **Pendente — Swagger:** login e resposta da telemetria.
+> **Figura 1 — Dashboard do SOMPLE executando em ambiente AWS através do IPv4 público da instância EC2, com seis equipamentos monitorados.**
 
-### Dashboard
+<p align="center">
+  <img src="docs/evidencias/aws/02-login-aws.png" width="1000" alt="Tela de login do SOMPLE hospedada na EC2">
+</p>
 
-- **Pendente — visão geral:** KPIs, score, ranking e gráficos.
-- **Pendente — assessment:** score, confiança, fatores e recomendação.
-- **Pendente — alertas:** alerta persistido e exibido.
-- **Pendente — auditoria:** histórico do fluxo.
+> **Figura 2 — Tela de autenticação do SOMPLE disponibilizada pela instância AWS EC2.**
 
-### AWS — somente após implantação real
+### Infraestrutura Amazon EC2
 
-- **Pendente — Console:** somente serviços realmente usados.
-- **Pendente — EC2:** conexão, Compose, containers, healthcheck e carga.
-- **Pendente — aplicação publicada:** dashboard na URL real.
+<p align="center">
+  <img src="docs/evidencias/aws/04-ec2-instancia-executando.png" width="1000" alt="Instância somple-server em execução no Amazon EC2">
+</p>
 
-Legenda recomendada: **Figura — Dashboard SOMPLE executando em ambiente AWS.**
+> **Figura 3 — Instância `somple-server`, do tipo `t2.medium`, em estado Executando no Amazon EC2.**
 
-### Sequência recomendada de evidências
+<p align="center">
+  <img src="docs/evidencias/aws/03-ec2-conexao.png" width="1000" alt="Detalhes de conexão e rede da instância EC2 do SOMPLE">
+</p>
 
-1. infraestrutura e containers;
-2. PostgreSQL e migrations;
-3. backend e readiness;
-4. carga de demonstração;
-5. login e JWT;
-6. telemetria recebida;
-7. modelo executado;
-8. score e fatores gerados;
-9. assessment persistido;
-10. alerta criado quando aplicável;
-11. auditoria e dashboard;
-12. aplicação hospedada, se a AWS for concluída.
+> **Figura 4 — Página de conexão da instância EC2 utilizada pelo SOMPLE, exibindo estado, VPC, subnet, Security Group e IPv4 público.**
+
+### Ambiente AWS Academy
+
+<p align="center">
+  <img src="docs/evidencias/aws/05-console-aws.png" width="900" alt="Console AWS do ambiente acadêmico usado pelo SOMPLE">
+</p>
+
+> **Figura 5 — Console AWS do ambiente acadêmico utilizado para a implantação do MVP SOMPLE.**
+
+<p align="center">
+  <img src="docs/evidencias/aws/06-aws-academy-lab.png" width="1000" alt="AWS Academy Learner Lab utilizado na Sprint 3">
+</p>
+
+> **Figura 6 — AWS Academy Learner Lab utilizado para provisionamento e execução da infraestrutura da Sprint 3.**
 
 ## Atendimento aos requisitos da Sprint 3
 
@@ -608,7 +606,7 @@ Legenda recomendada: **Figura — Dashboard SOMPLE executando em ambiente AWS.**
 | Docker | Compose local com frontend, backend e banco |
 | Documentação | README centralizado |
 | Arquitetura | Frontend/backend/infra e router/service/repository |
-| AWS | Preparação e arquitetura-alvo; deploy não comprovado |
+| AWS | Implantação adicional do MVP comprovada em Amazon EC2 no AWS Academy |
 
 ## Decisões técnicas
 
@@ -640,7 +638,7 @@ Para o MVP, o runtime permanece no FastAPI. Um microsserviço separado adicionar
 - O logout não possui blacklist/revogação de JWT no servidor.
 - Alertas não disparam notificações externas.
 - Drift, monitoramento e retreinamento não estão automatizados.
-- A implantação AWS precisa ser executada e comprovada.
+- A implantação acadêmica usa HTTP diretamente pelo IPv4 público da EC2; uma evolução produtiva requer domínio, HTTPS, banco gerenciado, observabilidade e distribuição adequada do frontend.
 - Georreferenciamento, tempo real e histórico real de sinistros podem ampliar o MVP.
 
 ## Checklist de entrega
@@ -657,9 +655,7 @@ Para o MVP, o runtime permanece no FastAPI. Um microsserviço separado adicionar
 - [x] Docker Compose local
 - [x] Documentação principal
 - [ ] Aplicar autorização específica por perfil
-- [ ] Comprovar implantação AWS, caso usada
-- [ ] Adicionar prints finais
-- [ ] Produzir o vídeo de demonstração
+- [x] Implantação AWS Academy / EC2 documentada
 
 ## Vídeo de demonstração
 
