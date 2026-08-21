@@ -7,7 +7,7 @@ import { setAuthToken } from "@/lib/auth/token.storage";
 import { useAppNavigate } from "@/lib/navigation/useAppNavigate";
 import { toast } from "@/lib/toast/toast.utils";
 import type { LoginFormValues } from "./Login.types";
-import { LOGIN_DEFAULT_VALUES, loginSchema } from "./Login.utils";
+import { loginSchema } from "./Login.utils";
 
 export const useLogin = () => {
   const navigate = useAppNavigate();
@@ -16,7 +16,6 @@ export const useLogin = () => {
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: LOGIN_DEFAULT_VALUES,
   });
 
   const onSubmit = form.handleSubmit((values) => {
