@@ -638,7 +638,7 @@ Para o MVP, o runtime permanece no FastAPI. Um microsserviço separado adicionar
 - O logout não possui blacklist/revogação de JWT no servidor.
 - Alertas não disparam notificações externas.
 - Drift, monitoramento e retreinamento não estão automatizados.
-- A implantação acadêmica usa HTTP diretamente pelo IPv4 público da EC2; uma evolução produtiva requer domínio, HTTPS, banco gerenciado, observabilidade e distribuição adequada do frontend.
+- A implantação acadêmica usa HTTP diretamente pelo IPv4 público da EC2
 - Georreferenciamento, tempo real e histórico real de sinistros podem ampliar o MVP.
 
 ## Checklist de entrega
@@ -659,4 +659,6 @@ Para o MVP, o runtime permanece no FastAPI. Um microsserviço separado adicionar
 
 ## Vídeo de demonstração
 
-O vídeo de demonstração da Sprint 3 será adicionado antes da entrega final.
+- Sprint 1 — [https://www.youtube.com/watch?v=04eJA7Vp_PU](https://www.youtube.com/watch?v=04eJA7Vp_PU)
+- Sprint 2 — [https://www.youtube.com/watch?v=06a06tTTZ3s](https://www.youtube.com/watch?v=06a06tTTZ3s)
+- Sprint 3 — [https://www.youtube.com/watch?v=YHfipkk08CA](https://www.youtube.com/watch?v=YHfipkk08CA)
