@@ -17,7 +17,10 @@ const toastIconStyles = {
 } as const;
 
 const ToastIcon = ({ type }: { type?: string }) => {
-  const className = cn("size-4 shrink-0", toastIconStyles[type as keyof typeof toastIconStyles] ?? toastIconStyles.info);
+  const className = cn(
+    "size-4 shrink-0",
+    toastIconStyles[type as keyof typeof toastIconStyles] ?? toastIconStyles.info,
+  );
 
   if (type === "success") return <CircleCheck className={className} aria-hidden="true" />;
   if (type === "error") return <CircleX className={className} aria-hidden="true" />;

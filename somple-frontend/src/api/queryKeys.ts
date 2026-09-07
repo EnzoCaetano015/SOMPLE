@@ -10,4 +10,5 @@ export const queryKeys = {
   operations: ["operations"] as const,
   assessment: (id: string) => ["assessment", id] as const,
   audit: (filters?: Record<string, unknown>) => ["audit", filters] as const,
+  auditEvents: (eventType?: string) => ["audit", "events", eventType] as const,
 };

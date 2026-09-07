@@ -124,7 +124,7 @@ def build_payload(
             "recorded_at": datetime.now(timezone.utc).isoformat(),
             "latitude": -23.55052,
             "longitude": -46.633308,
-            "source": f"simulator:{scenario}",
+            "source": "simulator",
         }
     )
     return payload

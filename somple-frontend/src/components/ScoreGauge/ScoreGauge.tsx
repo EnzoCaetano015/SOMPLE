@@ -34,7 +34,9 @@ export const ScoreGauge = ({ score, label, subtitle }: ScoreGaugeProps) => {
           </PieChart>
         </ResponsiveContainer>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className={`font-mono-num text-[40px] leading-none font-bold ${presentation.textClass}`}>
+          <span
+            className={`font-mono-num text-[40px] leading-none font-bold ${presentation.textClass}`}
+          >
             {score}
           </span>
           <span className="mt-1.5 text-xs font-semibold tracking-wide uppercase">

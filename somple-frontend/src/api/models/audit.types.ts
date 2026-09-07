@@ -26,3 +26,23 @@ export namespace GetAudit {
     operation_type?: string;
   };
 }
+
+export namespace GetAuditEvents {
+  export type Item = {
+    id: number;
+    created_at: string;
+    event_type: string;
+    actor: string | null;
+    entity_type: string | null;
+    entity_id: number | null;
+    request_id: string | null;
+    endpoint: string | null;
+    http_method: string | null;
+    status_code: number | null;
+    metadata: Record<string, unknown>;
+  };
+
+  export type Response = {
+    items: Item[];
+  };
+}

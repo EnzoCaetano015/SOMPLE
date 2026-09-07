@@ -7,11 +7,7 @@ import { cn } from "@/lib/utils";
 export const SearchInput = ({ value, onValueChange, placeholder, className }: SearchInputProps) => {
   return (
     <div
-      className={cn(
-        "flex min-w-[280px] items-center gap-2 px-3.5 py-2.5",
-        NEU_INPUT,
-        className,
-      )}
+      className={cn("flex min-w-[280px] items-center gap-2 px-3.5 py-2.5", NEU_INPUT, className)}
     >
       <Search className="size-3.5 shrink-0 text-somple-muted" aria-hidden="true" />
       <input

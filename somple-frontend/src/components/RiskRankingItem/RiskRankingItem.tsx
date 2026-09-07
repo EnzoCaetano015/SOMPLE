@@ -17,7 +17,9 @@ export const RiskRankingItem = ({
       </TableCell>
       <TableCell className="font-mono-num text-[13px] font-semibold">{equipmentId}</TableCell>
       <TableCell className="text-sm">{equipmentType}</TableCell>
-      <TableCell className={`font-mono-num text-right text-base font-bold ${getScoreTextClass(score)}`}>
+      <TableCell
+        className={`font-mono-num text-right text-base font-bold ${getScoreTextClass(score)}`}
+      >
         {score}
       </TableCell>
       <TableCell className="text-right">

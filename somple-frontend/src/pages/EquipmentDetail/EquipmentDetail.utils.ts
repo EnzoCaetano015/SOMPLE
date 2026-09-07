@@ -1,10 +1,5 @@
 import type { GetEquipmentDetail } from "@/api/models/equipment.types";
-import {
-  formatDateTime,
-  formatPercent,
-  formatRain,
-  formatSpeed,
-} from "@/lib/utils/format.utils";
+import { formatDateTime, formatPercent, formatRain, formatSpeed } from "@/lib/utils/format.utils";
 import { getRiskLevelFromScore } from "@/lib/utils/risk.utils";
 import type { EquipmentDetailViewModel } from "./EquipmentDetail.types";
 

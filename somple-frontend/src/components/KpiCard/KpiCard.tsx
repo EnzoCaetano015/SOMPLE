@@ -28,11 +28,18 @@ export const KpiCard = ({
         <Icon className="size-4" aria-hidden="true" />
       </div>
       <p className="text-xs font-medium text-somple-muted">{label}</p>
-      <p className={cn("font-mono-num mt-2 text-[32px] leading-none font-bold tracking-tight", valueClassName)}>
+      <p
+        className={cn(
+          "font-mono-num mt-2 text-[32px] leading-none font-bold tracking-tight",
+          valueClassName,
+        )}
+      >
         {value}
       </p>
       {hint ? (
-        <p className={cn("font-mono-num mt-1.5 flex items-center gap-1 text-[11px]", hintClassName)}>
+        <p
+          className={cn("font-mono-num mt-1.5 flex items-center gap-1 text-[11px]", hintClassName)}
+        >
           {hint}
         </p>
       ) : null}

@@ -21,7 +21,13 @@ export const useUpdateAlertStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, status }: { id: number; status: UpdateAlertStatus.Request["status"] }) => {
+    mutationFn: async ({
+      id,
+      status,
+    }: {
+      id: number;
+      status: UpdateAlertStatus.Request["status"];
+    }) => {
       const { data } = await sompleAPI.patch<UpdateAlertStatus.Response>(
         API_ROUTES.alerts.status(id),
         { status },

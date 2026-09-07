@@ -20,5 +20,8 @@ export const API_ROUTES = {
   assessments: {
     detail: (id: number | string) => `/assessments/${id}`,
   },
-  audit: "/audit",
+  audit: {
+    history: "/audit",
+    events: "/audit/events",
+  },
 } as const;

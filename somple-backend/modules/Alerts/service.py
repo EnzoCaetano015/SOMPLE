@@ -63,7 +63,12 @@ class AlertsService:
             raise ResourceNotFoundError("Alert not found")
 
         now = datetime.now(timezone.utc)
-        update_payload: dict = {"status": payload.status}
+        update_payload: dict = {
+            "status": payload.status,
+            "acknowledged_by": None,
+            "acknowledged_at": None,
+            "resolved_at": None,
+        }
         if payload.status == "acknowledged":
             update_payload["acknowledged_by"] = user.id
             update_payload["acknowledged_at"] = now

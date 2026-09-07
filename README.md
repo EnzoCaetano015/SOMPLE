@@ -108,7 +108,7 @@ Principais evoluções da Sprint 3:
 - RBAC aplicado no backend e refletido em menus, rotas e ações do frontend;
 - tentativas inválidas de login persistidas como `auth.login.failed`;
 - regressão automatizada para autenticação, autorização, telemetria e simulador;
-- estrutura e roteiro para evidências funcionais reproduzíveis sem depender do vídeo.
+- seis evidências funcionais reais e reproduzíveis, sem depender do vídeo.
 
 ## Arquitetura de software
 
@@ -189,7 +189,7 @@ Executa consultas, inserções e atualizações no PostgreSQL, sem concentrar re
 | Telemetry | Ingestão e execução do pipeline completo de avaliação |
 | Assessment | Detalhe de score, modelo, entradas, fatores e recomendação |
 | Alerts | Listagem e atualização de status de alertas |
-| Audit | Histórico filtrável de avaliações e rastreabilidade |
+| Audit | Histórico filtrável de avaliações e consulta RBAC aos eventos de auditoria |
 
 ## Fluxo de dados de ponta a ponta
 
@@ -354,6 +354,8 @@ Recursos confirmados:
 - detalhe do assessment com entradas, fatores e recomendação.
 
 O React atende à apresentação dos resultados e mantém interface, backend Python e IA desacoplados.
+A auditoria possui abas para assessments e eventos do sistema; esta última é restrita a `admin` e
+`analyst` e pode filtrar eventos como `auth.login.failed`.
 
 ## Aderência às User Stories
 
@@ -532,7 +534,11 @@ pytest -q
 
 A suíte recusa bancos cujo nome não contenha `test`. Ela cobre login e auditoria, `401`/`403`,
 perfis, pipeline de telemetria, persistência de assessments/alertas/auditoria e o cliente HTTP do
-simulador. No frontend, execute `vp check`, `vp test` e `vp build` dentro de `somple-frontend`.
+simulador. No frontend, execute `vp check`, `vp test` e `vp run build` dentro de `somple-frontend`.
+
+Em 07/09/2026, a execução local registrou `53 passed` no backend, 3 testes aprovados no frontend,
+check sem erros e build concluído. Os avisos remanescentes são quatro avisos preexistentes de Fast
+Refresh e o aviso de tamanho do chunk principal.
 
 ### Parando o projeto
 
@@ -599,11 +605,10 @@ As evidências reais da implantação estão organizadas em `docs/evidencias/aws
 
 ### Evidências funcionais
 
-As capturas pós-Sprint 3 ficam em `docs/evidencias/funcional`. O
-[checklist de evidências](docs/evidencias/funcional/README.md) descreve como reproduzir dashboard,
-monitoramento, assessment com SHAP, alerta crítico, auditoria do pipeline e login inválido.
-Somente arquivos capturados do sistema real devem ser adicionados; itens ainda não capturados
-permanecem explicitamente marcados no checklist, sem links quebrados ou PNGs fabricados.
+As seis capturas pós-Sprint 3 ficam em `docs/evidencias/funcional`. O
+[registro das evidências](docs/evidencias/funcional/README.md) documenta ambiente, comandos, cenário
+e resultado observado para dashboard, monitoramento, assessment com explicabilidade, alerta crítico,
+auditoria do pipeline e login inválido. Todos os PNGs foram capturados do sistema local em execução.
 
 ### Aplicação hospedada na AWS
 
@@ -691,7 +696,7 @@ Para o MVP, o runtime permanece no FastAPI. Um microsserviço separado adicionar
 
 - Dados de treinamento e demonstração predominantemente simulados.
 - Integrações diretas com IoT e APIs meteorológicas ainda não existem.
-- A base de roles existe, mas políticas por perfil ainda precisam ser aplicadas.
+- O RBAC atual cobre os três perfis do MVP; novas roles exigirão ampliar a matriz e seus testes.
 - O logout não possui blacklist/revogação de JWT no servidor.
 - Alertas não disparam notificações externas.
 - Drift, monitoramento e retreinamento não estão automatizados.

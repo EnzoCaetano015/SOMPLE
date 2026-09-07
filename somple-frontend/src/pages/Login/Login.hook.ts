@@ -24,7 +24,7 @@ export const useLogin = () => {
       onSuccess: (response) => {
         setAuthToken(response.access_token);
         toast.success("Login realizado com sucesso!");
-        void navigate("/dashboard");
+        navigate("/dashboard");
       },
       onError: () => {
         setError("Não foi possível autenticar. Verifique suas credenciais.");

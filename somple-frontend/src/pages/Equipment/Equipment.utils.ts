@@ -62,8 +62,7 @@ export const mapEquipmentViewModel = (
   viewMode,
   filters: DEFAULT_EQUIPMENT_FILTERS.map((filter) => ({
     ...filter,
-    value:
-      filter.id === "region" ? regionFilter : filter.id === "risk" ? riskFilter : filter.value,
+    value: filter.id === "region" ? regionFilter : filter.id === "risk" ? riskFilter : filter.value,
   })),
   items: mapEquipmentItems(data),
 });

@@ -1,11 +1,6 @@
 import type { GetMonitoring } from "@/api/models/monitoring.types";
 import type { FilterDefinition } from "@/components/FilterBar/FilterBar.types";
-import {
-  formatDateTime,
-  formatPercent,
-  formatRain,
-  formatSpeed,
-} from "@/lib/utils/format.utils";
+import { formatDateTime, formatPercent, formatRain, formatSpeed } from "@/lib/utils/format.utils";
 import { getRiskLevelFromScore } from "@/lib/utils/risk.utils";
 import type { MonitoringViewModel } from "./Monitoring.types";
 

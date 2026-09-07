@@ -75,7 +75,11 @@ export const Equipment = () => {
       </div>
 
       {showSkeleton ? (
-        viewMode === "table" ? <TableSkeleton /> : <CardsSkeleton />
+        viewMode === "table" ? (
+          <TableSkeleton />
+        ) : (
+          <CardsSkeleton />
+        )
       ) : isEmpty ? (
         <EmptyState
           Icon={Tractor}

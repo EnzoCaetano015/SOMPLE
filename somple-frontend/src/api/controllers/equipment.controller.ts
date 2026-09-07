@@ -9,10 +9,9 @@ export const useGetEquipmentList = (params: GetEquipmentList.Params = {}) => {
   return useQuery({
     queryKey: queryKeys.equipment(params.search, params.region_id, params.risk_level),
     queryFn: async () => {
-      const { data } = await sompleAPI.get<GetEquipmentList.Response>(
-        API_ROUTES.equipment.list,
-        { params },
-      );
+      const { data } = await sompleAPI.get<GetEquipmentList.Response>(API_ROUTES.equipment.list, {
+        params,
+      });
       return data;
     },
   });

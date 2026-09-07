@@ -35,7 +35,9 @@ export const EquipmentCard = ({
               style={{ "--progress": `${riskScore}%` } as CSSProperties}
             />
           </div>
-          <span className={`font-mono-num min-w-7 text-right text-sm font-bold ${presentation.textClass}`}>
+          <span
+            className={`font-mono-num min-w-7 text-right text-sm font-bold ${presentation.textClass}`}
+          >
             {riskScore}
           </span>
         </div>

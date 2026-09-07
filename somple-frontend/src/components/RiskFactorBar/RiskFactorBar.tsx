@@ -13,12 +13,12 @@ export const RiskFactorBar = ({ label, value, weight }: RiskFactorBarProps) => {
           {value}% · peso {weight}%
         </span>
       </div>
-        <div className="h-1.5 overflow-hidden rounded-full bg-somple-border">
-          <div
-            className={`progress-bar h-full rounded-full ${barClass}`}
-            style={{ "--progress": `${value}%` } as CSSProperties}
-          />
-        </div>
+      <div className="h-1.5 overflow-hidden rounded-full bg-somple-border">
+        <div
+          className={`progress-bar h-full rounded-full ${barClass}`}
+          style={{ "--progress": `${value}%` } as CSSProperties}
+        />
+      </div>
     </div>
   );
 };

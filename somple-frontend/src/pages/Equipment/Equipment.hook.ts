@@ -60,7 +60,7 @@ export const useEquipment = () => {
   };
 
   const handleSelectEquipment = (equipmentId: string) => {
-    void navigate(`/equipment/${equipmentId}`);
+    navigate(`/equipment/${equipmentId}`);
   };
 
   return {

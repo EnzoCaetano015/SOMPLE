@@ -90,6 +90,9 @@ pytest -q
 Linux/macOS usa o mesmo fluxo, ativando `.venv/bin/activate` e exportando `TEST_DATABASE_URL`.
 A suíte recusa qualquer banco cujo nome não contenha `test`.
 
+Execução confirmada em 07/09/2026: `53 passed`. A suíte cobre autenticação, eventos de login,
+matriz RBAC, pipeline real, factors/recomendação, alertas, auditoria e contrato HTTP do simulador.
+
 ## Fluxo principal
 
 1. `POST /api/v1/telemetry`;
@@ -101,6 +104,10 @@ A suíte recusa qualquer banco cujo nome não contenha `test`.
 Logins válidos geram `auth.login`. Usuário inexistente, inativo ou senha incorreta geram
 `auth.login.failed` com mensagem externa única (`Invalid credentials`). O evento inclui contexto
 HTTP e e-mail informado, mas nunca senha, hash, token ou a causa real da falha.
+
+`GET /api/v1/audit/events` permite que `admin` e `analyst` consultem esses eventos e filtrem por
+`event_type`; o endpoint mantém a mesma separação `router -> service -> repository` dos demais
+módulos. Operadores recebem `403` e requisições sem autenticação recebem `401`.
 
 ## Deploy
 

@@ -3,6 +3,37 @@ from psycopg import Connection
 
 class AuditRepository:
     @staticmethod
+    def list_events(conn: Connection, *, event_type: str | None = None) -> list[dict]:
+        clauses = ["1=1"]
+        params: list = []
+        if event_type:
+            clauses.append("al.event_type = %s")
+            params.append(event_type)
+        where = " AND ".join(clauses)
+        return conn.execute(
+            f"""
+            SELECT
+                al.id,
+                al.created_at,
+                al.event_type,
+                u.email AS actor,
+                al.entity_type,
+                al.entity_id,
+                al.request_id,
+                al.endpoint,
+                al.http_method,
+                al.status_code,
+                al.metadata
+            FROM audit_logs al
+            LEFT JOIN users u ON u.id = al.actor_user_id
+            WHERE {where}
+            ORDER BY al.created_at DESC
+            LIMIT 200
+            """,
+            params,
+        ).fetchall()
+
+    @staticmethod
     def list_assessments(conn: Connection, filters: dict) -> list[dict]:
         clauses = ["1=1"]
         params: list = []
