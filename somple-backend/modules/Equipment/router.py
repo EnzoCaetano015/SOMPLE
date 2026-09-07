@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query
 
-from core.authorization import AuthenticatedUser, require_authenticated_user
+from core.authorization import AuthenticatedUser, require_roles
 from modules.Equipment.schemas import EquipmentDetailResponse, EquipmentListResponse
 from modules.Equipment.service import get_equipment_detail, list_equipment
 
@@ -12,7 +12,7 @@ def equipment_list(
     search: str | None = Query(default=None),
     region_id: int | None = Query(default=None),
     risk_level: str | None = Query(default=None),
-    _: AuthenticatedUser = Depends(require_authenticated_user),
+    _: AuthenticatedUser = Depends(require_roles("admin", "analyst", "operator")),
 ) -> EquipmentListResponse:
     return list_equipment(search=search, region_id=region_id, risk_level=risk_level)
 
@@ -20,6 +20,6 @@ def equipment_list(
 @router.get("/{equipment_code}", response_model=EquipmentDetailResponse, summary="Equipment detail")
 def equipment_detail(
     equipment_code: str,
-    _: AuthenticatedUser = Depends(require_authenticated_user),
+    _: AuthenticatedUser = Depends(require_roles("admin", "analyst", "operator")),
 ) -> EquipmentDetailResponse:
     return get_equipment_detail(equipment_code)

@@ -40,6 +40,7 @@ export const Dashboard = () => {
     filters,
     isLoading,
     isError,
+    canViewAssessments,
     refetch,
     handleFilterChange,
     handleAlertDetails,
@@ -47,7 +48,14 @@ export const Dashboard = () => {
 
   if (isLoading) return <DashboardSkeleton />;
   if (isError) return <ErrorState onRetry={() => void refetch()} />;
-  if (!kpis || !filters || !ranking || !riskEvolutionData || !riskDistributionData || !recentAlerts) {
+  if (
+    !kpis ||
+    !filters ||
+    !ranking ||
+    !riskEvolutionData ||
+    !riskDistributionData ||
+    !recentAlerts
+  ) {
     return null;
   }
 
@@ -78,7 +86,11 @@ export const Dashboard = () => {
       </section>
 
       <section className="grid gap-5.5 xl:grid-cols-[1fr_1.2fr]">
-        <ScoreGauge score={fleetScore ?? 0} label="Score geral da frota" subtitle="Score operacional" />
+        <ScoreGauge
+          score={fleetScore ?? 0}
+          label="Score geral da frota"
+          subtitle="Score operacional"
+        />
         <NeumorphicCard className="overflow-hidden p-0">
           <div className="border-b border-somple-border/50 px-6 py-4">
             <h3 className="text-h3 text-somple-ink">Equipamentos com maior risco</h3>
@@ -185,8 +197,10 @@ export const Dashboard = () => {
                 description={alert.description}
                 timeAgo={alert.timeAgo}
                 riskLevel={alert.riskLevel}
-                actionLabel="Ver detalhes →"
-                onAction={() => handleAlertDetails(alert.assessmentId)}
+                actionLabel={canViewAssessments ? "Ver detalhes →" : undefined}
+                onAction={
+                  canViewAssessments ? () => handleAlertDetails(alert.assessmentId) : undefined
+                }
               />
             ))}
           </div>

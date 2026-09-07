@@ -1,10 +1,13 @@
 import { AppLayout } from "@/components/AppLayout/AppLayout";
 import { GuestOnly } from "@/components/GuestOnly/GuestOnly";
 import { RequireAuth } from "@/components/RequireAuth/RequireAuth";
-import { TemplatePages } from "@/components/TemplatePages/TemplatePages";import { AlertTriangle, CircleQuestionMark, MonitorX } from "lucide-react";
+import { RequireRole } from "@/components/RequireRole/RequireRole";
+import { TemplatePages } from "@/components/TemplatePages/TemplatePages";
+import { AlertTriangle, CircleQuestionMark, MonitorX } from "lucide-react";
 import { createBrowserRouter, Outlet, redirect, RouterProvider } from "react-router";
 
 import { Pages } from "./pages";
+import { ANALYTICAL_ROLES } from "@/lib/auth/permissions";
 
 const routes = createBrowserRouter([
   {
@@ -82,18 +85,24 @@ const routes = createBrowserRouter([
                 element: <Pages.Alerts />,
               },
               {
-                path: "assessment/:assessmentId",
-                element: <Pages.Assessment />,
-              },
-              {
-                path: "audit",
-                element: <Pages.Audit />,
+                element: <RequireRole allowedRoles={ANALYTICAL_ROLES} />,
+                children: [
+                  {
+                    path: "assessment/:assessmentId",
+                    element: <Pages.Assessment />,
+                  },
+                  {
+                    path: "audit",
+                    element: <Pages.Audit />,
+                  },
+                ],
               },
             ],
           },
         ],
       },
-    ],  },
+    ],
+  },
 ]);
 
 const Routes = () => {

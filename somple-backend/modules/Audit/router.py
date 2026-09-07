@@ -2,7 +2,7 @@ from datetime import datetime
 
 from fastapi import APIRouter, Depends, Query
 
-from core.authorization import AuthenticatedUser, require_authenticated_user
+from core.authorization import AuthenticatedUser, require_roles
 from modules.Audit.schemas import AuditResponse
 from modules.Audit.service_read import list_audit_history
 
@@ -17,7 +17,7 @@ def audit(
     region_id: int | None = Query(default=None),
     risk_level: str | None = Query(default=None),
     operation_type: str | None = Query(default=None),
-    _: AuthenticatedUser = Depends(require_authenticated_user),
+    _: AuthenticatedUser = Depends(require_roles("admin", "analyst")),
 ) -> AuditResponse:
     return list_audit_history(
         equipment_code=equipment_code,

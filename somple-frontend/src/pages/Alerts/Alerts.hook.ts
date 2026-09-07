@@ -3,6 +3,7 @@ import { useAppNavigate } from "@/lib/navigation/useAppNavigate";
 
 import { useGetAlerts } from "@/api/controllers/alerts.controller";
 import { useNetworkStatus } from "@/lib/hooks/useNetworkStatus.hook";
+import { ANALYTICAL_ROLES, hasRole } from "@/lib/auth/permissions";
 import { mapAlertsViewModel } from "./Alerts.utils";
 
 export const useAlerts = () => {
@@ -17,7 +18,7 @@ export const useAlerts = () => {
   }, [data]);
 
   const handleOpenAssessment = (assessmentId: string) => {
-    void navigate(`/assessment/${assessmentId}`);
+    navigate(`/assessment/${assessmentId}`);
   };
 
   return {
@@ -26,6 +27,7 @@ export const useAlerts = () => {
     isError,
     isOffline,
     isEmpty: viewModel?.items.length === 0,
+    canViewAssessments: hasRole(...ANALYTICAL_ROLES),
     refetch,
     handleOpenAssessment,
   };

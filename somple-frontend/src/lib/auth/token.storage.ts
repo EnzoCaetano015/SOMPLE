@@ -1,15 +1,20 @@
 const AUTH_TOKEN_KEY = "somple_auth_token";
 
-type JwtPayload = {
+export type JwtPayload = {
   exp?: number;
+  user_id?: number;
+  sub?: string;
+  role?: string;
 };
 
-const decodeJwtPayload = (token: string): JwtPayload | null => {
+export const decodeJwtPayload = (token: string): JwtPayload | null => {
   try {
     const payload = token.split(".")[1];
     if (!payload) return null;
 
-    return JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/"))) as JwtPayload;
+    const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "=");
+    return JSON.parse(atob(padded)) as JwtPayload;
   } catch {
     return null;
   }

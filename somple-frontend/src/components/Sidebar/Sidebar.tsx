@@ -3,6 +3,7 @@ import { NavLink } from "react-router";
 
 import type { SidebarProps } from "./Sidebar.types";
 import { SIDEBAR_GROUPS } from "./Sidebar.utils";
+import { hasRole } from "@/lib/auth/permissions";
 import { cn } from "@/lib/utils";
 
 export const Sidebar = ({ isOpen, onNavigate }: SidebarProps) => {
@@ -38,45 +39,47 @@ export const Sidebar = ({ isOpen, onNavigate }: SidebarProps) => {
                 </p>
               ) : null}
               <ul className="space-y-0.5">
-                {group.items.map((item) => (
-                  <li key={item.label}>
-                    {item.href.startsWith("/") ? (
-                      <NavLink
-                        to={item.href}
-                        viewTransition
-                        onClick={onNavigate}
-                        className={({ isActive }) =>
-                          cn(
-                            "relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-150",
-                            isActive
-                              ? "bg-somple-bg font-semibold text-somple-corporate shadow-neumorphic-inset"
-                              : "text-somple-muted hover:bg-black/4 hover:text-somple-ink",
-                          )
-                        }
-                      >
-                        {({ isActive }) => (
-                          <>
-                            {isActive ? (
-                              <span className="absolute top-1/2 left-0 h-5 w-0.75 -translate-y-1/2 rounded-r bg-somple-highlight" />
-                            ) : null}
-                            <item.icon className="size-4.5 shrink-0" aria-hidden="true" />
-                            <span className="flex-1">{item.label}</span>
-                            {item.badge ? (
-                              <span className="flex size-5 items-center justify-center rounded-full bg-somple-danger font-mono text-[10px] font-bold text-somple-white">
-                                {item.badge}
-                              </span>
-                            ) : null}
-                          </>
-                        )}
-                      </NavLink>
-                    ) : (
-                      <span className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm text-somple-muted/70">
-                        <item.icon className="size-4.5 shrink-0" aria-hidden="true" />
-                        {item.label}
-                      </span>
-                    )}
-                  </li>
-                ))}
+                {group.items
+                  .filter((item) => !item.allowedRoles || hasRole(...item.allowedRoles))
+                  .map((item) => (
+                    <li key={item.label}>
+                      {item.href.startsWith("/") ? (
+                        <NavLink
+                          to={item.href}
+                          viewTransition
+                          onClick={onNavigate}
+                          className={({ isActive }) =>
+                            cn(
+                              "relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-150",
+                              isActive
+                                ? "bg-somple-bg font-semibold text-somple-corporate shadow-neumorphic-inset"
+                                : "text-somple-muted hover:bg-black/4 hover:text-somple-ink",
+                            )
+                          }
+                        >
+                          {({ isActive }) => (
+                            <>
+                              {isActive ? (
+                                <span className="absolute top-1/2 left-0 h-5 w-0.75 -translate-y-1/2 rounded-r bg-somple-highlight" />
+                              ) : null}
+                              <item.icon className="size-4.5 shrink-0" aria-hidden="true" />
+                              <span className="flex-1">{item.label}</span>
+                              {item.badge ? (
+                                <span className="flex size-5 items-center justify-center rounded-full bg-somple-danger font-mono text-[10px] font-bold text-somple-white">
+                                  {item.badge}
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </NavLink>
+                      ) : (
+                        <span className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm text-somple-muted/70">
+                          <item.icon className="size-4.5 shrink-0" aria-hidden="true" />
+                          {item.label}
+                        </span>
+                      )}
+                    </li>
+                  ))}
               </ul>
             </div>
           ))}

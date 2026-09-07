@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import type { SidebarGroup } from "./Sidebar.types";
+import { ANALYTICAL_ROLES } from "@/lib/auth/permissions";
 
 export const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
@@ -25,7 +26,7 @@ export const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     label: "Dados",
     items: [
-      { label: "Histórico", href: "/audit", icon: History },
+      { label: "Histórico", href: "/audit", icon: History, allowedRoles: ANALYTICAL_ROLES },
       { label: "Relatórios", href: "#", icon: FileText },
     ],
   },

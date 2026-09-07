@@ -23,6 +23,7 @@ A partir de uma telemetria, o sistema produz **score de risco de 0 a 100**, **n�
 - [Tecnologias utilizadas](#tecnologias-utilizadas)
 - [Executando localmente](#executando-localmente)
 - [Como gerar um novo score de risco](#como-gerar-um-novo-score-de-risco)
+- [Testes de regressão](#testes-de-regressão)
 - [Implantação na AWS — bônus](#implantação-na-aws--bônus)
 - [Evidências de execução](#evidências-de-execução)
 - [Atendimento aos requisitos da Sprint 3](#atendimento-aos-requisitos-da-sprint-3)
@@ -101,6 +102,14 @@ Principais evoluções da Sprint 3:
 - ambiente local reproduzível com Docker Compose;
 - preparação documental e técnica para uma futura implantação na AWS.
 
+### Correções após o feedback da Sprint 3
+
+- simulador de telemetria que autentica e envia leituras pelo endpoint real;
+- RBAC aplicado no backend e refletido em menus, rotas e ações do frontend;
+- tentativas inválidas de login persistidas como `auth.login.failed`;
+- regressão automatizada para autenticação, autorização, telemetria e simulador;
+- estrutura e roteiro para evidências funcionais reproduzíveis sem depender do vídeo.
+
 ## Arquitetura de software
 
 ```text
@@ -115,7 +124,7 @@ SOMPLE/
 │   ├── core/                    # configuração, banco, JWT e observabilidade
 │   ├── ml/                      # features, runtime, explicação e treinamento
 │   ├── modules/                 # módulos funcionais da API
-│   ├── scripts/                 # carga de demonstração
+│   ├── scripts/                 # carga demo e simulador HTTP de telemetria
 │   ├── utils/                   # erros, datas e regras compartilhadas
 │   └── main.py                  # inicialização do FastAPI
 ├── somple-infra/
@@ -303,16 +312,31 @@ As migrations em `somple-infra/database/migrations` são montadas em `/docker-en
 | Argon2 | Implementado; armazena hash, nunca senha em texto puro no banco |
 | Endpoints protegidos | Implementado para todos os módulos, exceto health e login |
 | Perfis no token | `admin`, `analyst` e `operator` são persistidos e incluídos no JWT |
-| Autorização por perfil | **Parcialmente implementada no MVP**: existe `require_roles`, mas os routers exigem apenas autenticação |
+| Autorização por perfil | Implementada com `require_roles` nos routers e UX equivalente no frontend |
 | CORS | Configurável por `CORS_ORIGINS` |
 | Variáveis de ambiente | Configuração e segredos ficam fora do código; somente exemplos são versionados |
-| Auditoria | Login, logout, telemetria, assessment e eventos de alerta possuem registro |
+| Auditoria | Login válido/inválido, logout, telemetria, assessment e eventos de alerta possuem registro |
 
 ```text
 Usuário autenticado → JWT → endpoint protegido → operação → audit_logs
 ```
 
-O logout é auditado, mas não revoga o token no servidor; o frontend remove o token local. Não use credenciais acadêmicas ou valores do `.env.example` em produção.
+Logins inválidos retornam sempre `Invalid credentials` e geram `auth.login.failed` sem senha,
+hash, token ou indicação da causa real. Requisições sem autenticação retornam `401`; uma role
+autenticada sem permissão recebe `403` sem perder a sessão. O logout é auditado, mas não revoga o
+token no servidor; o frontend remove o token local. Não use credenciais acadêmicas ou valores do
+`.env.example` em produção.
+
+### Matriz de permissões
+
+| Recurso | admin | analyst | operator |
+| --- | :---: | :---: | :---: |
+| Dashboard, equipamentos, operações e monitoramento | sim | sim | sim |
+| Leitura de alertas | sim | sim | sim |
+| Alteração de status de alertas | sim | sim | não |
+| Assessments | sim | sim | não |
+| Auditoria | sim | sim | não |
+| Envio de telemetria | sim | não | sim |
 
 ## Dashboard
 
@@ -344,7 +368,7 @@ O React atende à apresentação dos resultados e mantém interface, backend Pyt
 | Auditoria | `audit_logs` e snapshots | Implementado no MVP |
 | Entrada de telemetria | `POST /api/v1/telemetry` | Implementado no MVP |
 | Visualização | Dashboard React integrado | Implementado no MVP |
-| Restrições por perfil | Roles existem, sem aplicação nos routers | Parcialmente implementado no MVP |
+| Restrições por perfil | RBAC no backend e interface adaptada por role | Implementado |
 | Fontes reais de clima/IoT | API aceita telemetria, sem integração externa | Parcialmente implementado no MVP |
 
 ## Tecnologias utilizadas
@@ -431,7 +455,28 @@ O comando executa `create_demo_data.py` como módulo Python a partir do diretór
 
 > **Atenção:** credenciais exclusivas do ambiente acadêmico/de demonstração. Não reutilize em produção.
 
-### 5. Acesse os serviços
+### 5. Gere telemetria pelo pipeline real
+
+```bash
+docker compose --env-file ../.env exec backend \
+  python -m scripts.simulate_telemetry --scenario normal --count 10 --interval 1
+```
+
+Para gerar condições intermediárias ou com maior chance de risco:
+
+```bash
+docker compose --env-file ../.env exec backend \
+  python -m scripts.simulate_telemetry --scenario moderate --count 5 --interval 1
+docker compose --env-file ../.env exec backend \
+  python -m scripts.simulate_telemetry --scenario critical --count 5 --interval 1
+```
+
+O script autentica como operador, obtém o JWT, descobre operações ativas e usa somente
+`POST /api/v1/telemetry`. `--continuous` mantém o envio até `Ctrl+C`; `--operation-id` seleciona
+uma operação conhecida. A URL e as credenciais podem ser sobrescritas por `SOMPLE_API_URL`,
+`SOMPLE_DEMO_EMAIL` e `SOMPLE_DEMO_PASSWORD`.
+
+### 6. Acesse os serviços
 
 | Serviço | URL local |
 | --- | --- |
@@ -441,7 +486,7 @@ O comando executa `create_demo_data.py` como módulo Python a partir do diretór
 | OpenAPI JSON | `http://localhost:8000/openapi.json` |
 | PostgreSQL | `localhost:5432` |
 
-### 6. Valide a API
+### 7. Valide a API e observe os resultados
 
 ```bash
 curl http://localhost:8000/api/v1/health
@@ -452,38 +497,42 @@ O primeiro retorna `{"status":"ok"}`. Quando banco e modelo estão disponíveis,
 
 ## Como gerar um novo score de risco
 
-O frontend consulta e apresenta resultados, mas não possui formulário de ingestão. Use o Swagger:
+O frontend apresenta os resultados, mas não possui formulário manual de telemetria. Execute o
+simulador no container backend:
 
-1. abra `http://localhost:8000/docs`;
-2. execute `POST /api/v1/auth/login` com uma credencial de demonstração;
-3. copie o `access_token`;
-4. clique em **Authorize** e informe o token;
-5. execute `GET /api/v1/operations` e escolha um `id`;
-6. execute `POST /api/v1/telemetry` com esse `operation_id`;
-7. observe IDs, score, nível, confiança e indicação de alerta;
-8. consulte `GET /api/v1/assessments/{assessment_id}`;
-9. atualize `http://localhost:8080` para conferir o resultado persistido.
-
-Exemplo — ajuste `operation_id` para um ID retornado pela API:
-
-```json
-{
-  "operation_id": 1,
-  "recorded_at": "2026-08-20T15:00:00Z",
-  "rainfall_mm": 42,
-  "temperature_c": 29,
-  "soil_moisture_pct": 88,
-  "soil_type": "argiloso",
-  "slope_degrees": 16,
-  "distance_to_water_m": 25,
-  "speed_kmh": 8,
-  "latitude": -23.55052,
-  "longitude": -46.633308,
-  "source": "manual"
-}
+```bash
+docker compose --env-file ../.env exec backend \
+  python -m scripts.simulate_telemetry --scenario critical --count 1 --interval 0
 ```
 
-O nível depende do modelo; não se deve presumir que um payload sempre produzirá alerta.
+O terminal informa IDs, score, nível de risco e alerta. Em seguida:
+
+1. abra `http://localhost:8080` e faça login;
+2. confira dashboard, monitoramento e alertas;
+3. como `admin` ou `analyst`, abra o assessment para ver fatores e recomendação;
+4. consulte o histórico de avaliações em `/audit`.
+
+Os cenários são entradas plausíveis, não resultados forçados; a classificação continua sendo
+determinada pelo modelo versionado.
+
+## Testes de regressão
+
+Suba o PostgreSQL temporário, instale as dependências de teste em uma `.venv` e execute:
+
+```powershell
+cd somple-infra
+docker compose -f docker-compose.test.yml up -d --wait
+cd ..\somple-backend
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
+$env:TEST_DATABASE_URL="postgresql://somple_test:somple_test@localhost:5433/somple_test"
+pytest -q
+```
+
+A suíte recusa bancos cujo nome não contenha `test`. Ela cobre login e auditoria, `401`/`403`,
+perfis, pipeline de telemetria, persistência de assessments/alertas/auditoria e o cliente HTTP do
+simulador. No frontend, execute `vp check`, `vp test` e `vp build` dentro de `somple-frontend`.
 
 ### Parando o projeto
 
@@ -547,6 +596,14 @@ Não foram realizados benchmarks nem medições de disponibilidade ou escalabili
 ## Evidências de execução
 
 As evidências reais da implantação estão organizadas em `docs/evidencias/aws`. Account ID e identificadores pessoais do AWS Academy foram ocultados antes da publicação; dados técnicos úteis à avaliação, como nome e tipo da instância, rede e IPv4 público, foram preservados.
+
+### Evidências funcionais
+
+As capturas pós-Sprint 3 ficam em `docs/evidencias/funcional`. O
+[checklist de evidências](docs/evidencias/funcional/README.md) descreve como reproduzir dashboard,
+monitoramento, assessment com SHAP, alerta crítico, auditoria do pipeline e login inválido.
+Somente arquivos capturados do sistema real devem ser adicionados; itens ainda não capturados
+permanecem explicitamente marcados no checklist, sem links quebrados ou PNGs fabricados.
 
 ### Aplicação hospedada na AWS
 
@@ -654,7 +711,11 @@ Para o MVP, o runtime permanece no FastAPI. Um microsserviço separado adicionar
 - [x] Dashboard React
 - [x] Docker Compose local
 - [x] Documentação principal
-- [ ] Aplicar autorização específica por perfil
+- [x] Simulador de telemetria via API
+- [x] Autorização específica por perfil
+- [x] Auditoria de login inválido
+- [x] Testes de regressão
+- [x] Checklist de evidências funcionais reais
 - [x] Implantação AWS Academy / EC2 documentada
 
 ## Vídeo de demonstração

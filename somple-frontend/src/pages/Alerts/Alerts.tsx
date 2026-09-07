@@ -7,7 +7,16 @@ import { CardsSkeleton } from "@/components/PageSkeleton/PageSkeleton";
 import { PageHeader } from "@/components/PageHeader/PageHeader";
 
 export const Alerts = () => {
-  const { summary, items, isLoading, isError, isEmpty, refetch, handleOpenAssessment } = useAlerts();
+  const {
+    summary,
+    items,
+    isLoading,
+    isError,
+    isEmpty,
+    canViewAssessments,
+    refetch,
+    handleOpenAssessment,
+  } = useAlerts();
 
   if (isLoading) return <CardsSkeleton />;
   if (isError) return <ErrorState onRetry={() => void refetch()} />;
@@ -32,8 +41,10 @@ export const Alerts = () => {
               description={alert.description}
               timeAgo={alert.timeAgo}
               riskLevel={alert.riskLevel}
-              actionLabel="Ver detalhes →"
-              onAction={() => handleOpenAssessment(alert.assessmentId)}
+              actionLabel={canViewAssessments ? "Ver detalhes →" : undefined}
+              onAction={
+                canViewAssessments ? () => handleOpenAssessment(alert.assessmentId) : undefined
+              }
             />
           ))}
         </section>

@@ -3,6 +3,7 @@ import { useAppNavigate } from "@/lib/navigation/useAppNavigate";
 
 import { useGetDashboard } from "@/api/controllers/dashboard.controller";
 import { useNetworkStatus } from "@/lib/hooks/useNetworkStatus.hook";
+import { ANALYTICAL_ROLES, hasRole } from "@/lib/auth/permissions";
 import {
   DEFAULT_DASHBOARD_FILTERS,
   dashboardFiltersToParams,
@@ -28,7 +29,7 @@ export const useDashboard = () => {
   };
 
   const handleAlertDetails = (assessmentId: string) => {
-    void navigate(`/assessment/${assessmentId}`);
+    navigate(`/assessment/${assessmentId}`);
   };
 
   return {
@@ -37,6 +38,7 @@ export const useDashboard = () => {
     isError,
     isOffline,
     isEmpty: false,
+    canViewAssessments: hasRole(...ANALYTICAL_ROLES),
     refetch,
     handleFilterChange,
     handleAlertDetails,

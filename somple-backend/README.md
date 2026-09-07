@@ -5,7 +5,7 @@ API de monitoramento e predição de riscos ambientais e operacionais para equip
 ## Arquitetura
 
 ```text
-Telemetry -> FastAPI -> PostgreSQL -> Feature Builder -> ML Runtime
+Simulador -> HTTP API -> Telemetry -> PostgreSQL -> Feature Builder -> ML Runtime
 -> Assessment -> Alert -> Audit -> Frontend (React Query)
 ```
 
@@ -15,38 +15,92 @@ Camadas por módulo: `router -> service -> repository`.
 
 ```bash
 cd somple-backend
-python -m venv venv
-venv\Scripts\activate
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 copy .env.example .env
 ```
 
-Suba PostgreSQL (Docker Compose em `somple-infra`) e aplique migrations/seeds.
-
-Treine o modelo:
+Suba o PostgreSQL pelo Docker Compose de `somple-infra`, execute as migrations e crie os dados demo:
 
 ```bash
-python ml/training/train_model.py
-python scripts/create_demo_data.py
-```
-
-Execute a API:
-
-```bash
+python -m scripts.create_demo_data
 uvicorn main:app --reload
 ```
 
-Swagger: `http://localhost:8000/docs`
+Swagger: `http://localhost:8000/docs`.
 
-## Variáveis de ambiente
+## Simulador de telemetria
 
-Consulte [`.env.example`](.env.example).
+O simulador autentica pela API, encontra operações ativas e envia cada leitura somente por
+`POST /api/v1/telemetry`. Assim, ele percorre o pipeline real e nunca grava diretamente no banco.
+
+Pré-requisitos: API e PostgreSQL ativos e execução prévia de `scripts.create_demo_data`.
+
+```bash
+python -m scripts.simulate_telemetry --scenario normal --count 10 --interval 2
+python -m scripts.simulate_telemetry --scenario moderate --count 5 --interval 1
+python -m scripts.simulate_telemetry --scenario critical --interval 3 --continuous
+```
+
+- `normal`: condições ambientais estáveis;
+- `moderate`: condições intermediárias;
+- `critical`: valores plausíveis de chuva, umidade, inclinação e proximidade de água que aumentam a chance de risco;
+- `--count`: número de leituras no modo finito;
+- `--interval`: segundos entre leituras;
+- `--continuous`: envia até receber `Ctrl+C`;
+- `--operation-id`: usa uma operação específica em vez da descoberta automática.
+
+Configuração opcional: `SOMPLE_API_URL`, `SOMPLE_DEMO_EMAIL` e `SOMPLE_DEMO_PASSWORD`.
+Falhas de conexão, autenticação e respostas HTTP são resumidas no terminal sem expor tokens.
+
+## Matriz RBAC
+
+| Endpoint/grupo | admin | analyst | operator |
+| --- | :---: | :---: | :---: |
+| Health e login | público | público | público |
+| Logout | sim | sim | sim |
+| Dashboard | sim | sim | sim |
+| Equipamentos | sim | sim | sim |
+| Operações | sim | sim | sim |
+| Monitoramento | sim | sim | sim |
+| Leitura de alertas | sim | sim | sim |
+| Alteração de status de alertas | sim | sim | não |
+| Assessments | sim | sim | não |
+| Auditoria | sim | sim | não |
+| Envio de telemetria | sim | não | sim |
+
+Ausência ou invalidade do token retorna `401`; usuário autenticado sem a role exigida recebe `403`.
+
+## Testes
+
+Os testes usam exclusivamente o PostgreSQL temporário `somple_test` na porta `5433`.
+
+```powershell
+cd somple-infra
+docker compose -f docker-compose.test.yml up -d --wait
+cd ..\somple-backend
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
+$env:TEST_DATABASE_URL="postgresql://somple_test:somple_test@localhost:5433/somple_test"
+pytest -q
+```
+
+Linux/macOS usa o mesmo fluxo, ativando `.venv/bin/activate` e exportando `TEST_DATABASE_URL`.
+A suíte recusa qualquer banco cujo nome não contenha `test`.
 
 ## Fluxo principal
 
-1. `POST /api/v1/telemetry`
-2. Persistência transacional de telemetria, assessment, factors, alert e audit
-3. Consultas via `/dashboard`, `/monitoring`, `/equipment`, `/assessments/{id}`, `/audit`
+1. `POST /api/v1/telemetry`;
+2. persistência transacional de telemetria, assessment, factors, alert e audit;
+3. consultas via `/dashboard`, `/monitoring`, `/equipment`, `/assessments/{id}` e `/audit`.
+
+## Segurança e auditoria
+
+Logins válidos geram `auth.login`. Usuário inexistente, inativo ou senha incorreta geram
+`auth.login.failed` com mensagem externa única (`Invalid credentials`). O evento inclui contexto
+HTTP e e-mail informado, mas nunca senha, hash, token ou a causa real da falha.
 
 ## Deploy
 
@@ -56,4 +110,5 @@ O Dockerfile em `somple-infra/docker/backend/Dockerfile` executa:
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-Em produção AWS: FastAPI em EC2 (Docker), PostgreSQL em RDS privado, frontend em S3 + CloudFront. Configure `CORS_ORIGINS` para o domínio do frontend.
+Em produção AWS: FastAPI em EC2 (Docker), PostgreSQL em RDS privado, frontend em S3 + CloudFront.
+Configure `CORS_ORIGINS` para o domínio do frontend.

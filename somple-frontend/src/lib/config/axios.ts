@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { env } from "./env";
 import { clearAuthToken, getAuthToken } from "@/lib/auth/token.storage";
+import { toast } from "@/lib/toast/toast.utils";
 
 export const sompleAPI = axios.create({
   baseURL: env.apiBaseUrl,
@@ -28,6 +29,10 @@ sompleAPI.interceptors.response.use(
       if (window.location.pathname !== "/login") {
         window.location.assign("/login");
       }
+    } else if (error.response?.status === 403) {
+      toast.error("Acesso negado", {
+        description: "Seu perfil não possui permissão para executar esta ação.",
+      });
     }
     return Promise.reject(error);
   },

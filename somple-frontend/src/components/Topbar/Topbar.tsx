@@ -15,7 +15,8 @@ import {
 
 export const Topbar = ({ onMenuClick }: TopbarProps) => {
   const { pathname } = useLocation();
-  const { lastUpdatedLabel, handleLogout } = useTopbar();
+  const { user, lastUpdatedLabel, handleLogout } = useTopbar();
+  const initials = user?.email.slice(0, 2).toUpperCase() ?? "--";
   const title =
     ROUTE_TITLES[pathname] ??
     (pathname.startsWith("/equipment/") ? "Detalhe do equipamento" : "SOMPLE");
@@ -55,7 +56,7 @@ export const Topbar = ({ onMenuClick }: TopbarProps) => {
             aria-label="Abrir menu do perfil"
             className="flex size-[34px] cursor-pointer items-center justify-center rounded-full bg-somple-corporate text-[13px] font-bold text-somple-white transition-opacity hover:opacity-90"
           >
-            JR
+            {initials}
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
@@ -65,7 +66,10 @@ export const Topbar = ({ onMenuClick }: TopbarProps) => {
           >
             <DropdownMenuGroup>
               <DropdownMenuLabel className="px-2.5 py-2 text-xs font-medium text-somple-muted">
-                Minha conta
+                <span className="block text-somple-ink">{user?.email ?? "Minha conta"}</span>
+                {user ? (
+                  <span className="mt-0.5 block font-mono uppercase">{user.role}</span>
+                ) : null}
               </DropdownMenuLabel>
               <DropdownMenuItem
                 variant="destructive"
