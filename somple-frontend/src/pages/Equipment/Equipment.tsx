@@ -110,7 +110,7 @@ export const Equipment = () => {
                     <TableCell className="text-sm">{item.type}</TableCell>
                     <TableCell className="text-sm">{item.region}</TableCell>
                     <TableCell
-                      className={`font-mono-num text-right text-base font-bold ${getScoreTextClass(item.riskScore)}`}
+                      className={`font-mono-num text-right text-base font-bold ${getScoreTextClass(item.riskLevel)}`}
                     >
                       {item.riskScore}
                     </TableCell>

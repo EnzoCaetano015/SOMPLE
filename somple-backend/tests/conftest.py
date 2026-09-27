@@ -64,9 +64,10 @@ TABLES = (
 def _apply_migrations_if_needed() -> None:
     with psycopg.connect(TEST_DATABASE_URL, autocommit=True) as conn:
         exists = conn.execute("SELECT to_regclass('public.users')").fetchone()[0]
+        migrations = sorted(MIGRATIONS_DIR.glob("*.sql"))
         if exists:
-            return
-        for migration in sorted(MIGRATIONS_DIR.glob("*.sql")):
+            migrations = [path for path in migrations if int(path.name.split("_", 1)[0]) >= 5]
+        for migration in migrations:
             conn.execute(migration.read_text(encoding="utf-8"))
 
 

@@ -1,6 +1,6 @@
 import type { GetEquipmentDetail } from "@/api/models/equipment.types";
 import { formatDateTime, formatPercent, formatRain, formatSpeed } from "@/lib/utils/format.utils";
-import { getRiskLevelFromScore } from "@/lib/utils/risk.utils";
+import { Enum } from "@/api/enums/enum";
 import type { EquipmentDetailViewModel } from "./EquipmentDetail.types";
 
 export const mapEquipmentDetailViewModel = (
@@ -11,7 +11,7 @@ export const mapEquipmentDetailViewModel = (
   }
 
   const score = equipment.latest_assessment?.risk_score ?? 0;
-  const riskLevel = equipment.latest_assessment?.risk_level ?? getRiskLevelFromScore(score);
+  const riskLevel = equipment.latest_assessment?.risk_level ?? Enum.RiskLevel.LOW;
 
   return {
     id: equipment.equipment.code,

@@ -10,10 +10,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { BellOff } from "lucide-react";
+import { Activity, AlertTriangle, BellOff, BellRing, ClipboardList } from "lucide-react";
 
 import { useDashboard } from "./Dashboard.hook";
 import { KPI_ICON_MAP } from "./Dashboard.utils";
+import { Enum } from "@/api/enums/enum";
 import { AlertCard } from "@/components/AlertCard/AlertCard";
 import { ChartCard } from "@/components/ChartCard/ChartCard";
 import { EmptyState } from "@/components/EmptyState/EmptyState";
@@ -25,18 +26,28 @@ import { DashboardSkeleton } from "@/components/PageSkeleton/PageSkeleton";
 import { PageHeader } from "@/components/PageHeader/PageHeader";
 import { RiskRankingItem } from "@/components/RiskRankingItem/RiskRankingItem";
 import { ScoreGauge } from "@/components/ScoreGauge/ScoreGauge";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { formatCount, formatSharePercent } from "@/lib/utils/format.utils";
 
 export const Dashboard = () => {
   const {
     kpis,
-    fleetScore,
+    maxRiskScore,
+    maxRiskLevel,
     ranking,
     riskEvolutionData,
     riskDistributionData,
     recentAlerts,
+    report,
+    trends,
     filters,
     isLoading,
     isError,
@@ -87,9 +98,10 @@ export const Dashboard = () => {
 
       <section className="grid gap-5.5 xl:grid-cols-[1fr_1.2fr]">
         <ScoreGauge
-          score={fleetScore ?? 0}
-          label="Score geral da frota"
-          subtitle="Score operacional"
+          score={maxRiskScore ?? 0}
+          riskLevel={maxRiskLevel ?? Enum.RiskLevel.LOW}
+          label="Maior score do recorte"
+          subtitle="Máximo entre as avaliações filtradas"
         />
         <NeumorphicCard className="overflow-hidden p-0">
           <div className="border-b border-somple-border/50 px-6 py-4">
@@ -126,8 +138,84 @@ export const Dashboard = () => {
         </NeumorphicCard>
       </section>
 
+      <section className="space-y-4" aria-labelledby="consolidated-report-title">
+        <div>
+          <h3 id="consolidated-report-title" className="text-h3 text-somple-ink">
+            Relatório consolidado
+          </h3>
+          <p className="text-meta mt-1">
+            Indicadores calculados com os mesmos filtros da visão geral.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <KpiCard
+            icon={Activity}
+            label="Score médio"
+            value={String(report?.averageRiskScore ?? 0)}
+            hint="Média simples"
+          />
+          <KpiCard
+            icon={AlertTriangle}
+            label="Score máximo"
+            value={String(report?.maxRiskScore ?? 0)}
+            hint="Maior avaliação"
+          />
+          <KpiCard
+            icon={ClipboardList}
+            label="Avaliações"
+            value={String(report?.assessmentCount ?? 0)}
+            hint="No período"
+          />
+          <KpiCard
+            icon={BellRing}
+            label="Alertas"
+            value={String(report?.alertCount ?? 0)}
+            hint="Gerados no período"
+          />
+        </div>
+        <NeumorphicCard className="overflow-hidden p-0">
+          <div className="border-b border-somple-border/50 px-6 py-4">
+            <h4 className="font-semibold text-somple-ink">Comparativo por categoria de operação</h4>
+          </div>
+          {trends && trends.length > 0 ? (
+            <div className="overflow-x-auto" role="region" aria-label="Relatório por categoria">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Categoria</TableHead>
+                    <TableHead className="text-right">Score médio</TableHead>
+                    <TableHead className="text-right">Score máximo</TableHead>
+                    <TableHead className="text-right">Avaliações</TableHead>
+                    <TableHead className="text-right">Alertas</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {trends.map((item) => (
+                    <TableRow key={item.key}>
+                      <TableCell>{item.label}</TableCell>
+                      <TableCell className="text-right font-mono-num">
+                        {item.averageRiskScore}
+                      </TableCell>
+                      <TableCell className="text-right font-mono-num">
+                        {item.maxRiskScore}
+                      </TableCell>
+                      <TableCell className="text-right font-mono-num">
+                        {item.assessmentCount}
+                      </TableCell>
+                      <TableCell className="text-right font-mono-num">{item.alertCount}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : (
+            <div className="p-6 text-sm text-somple-muted">Nenhum dado no recorte selecionado.</div>
+          )}
+        </NeumorphicCard>
+      </section>
+
       <section className="grid gap-5.5 xl:grid-cols-2">
-        <ChartCard title="Evolução do risco" subtitle="Score médio da frota nas últimas horas">
+        <ChartCard title="Evolução do risco" subtitle="Score médio no período selecionado">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={riskEvolutionData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#D0D0D0" />
@@ -186,7 +274,7 @@ export const Dashboard = () => {
       <section className="space-y-4">
         <div>
           <h3 className="text-h3 text-somple-ink">Alertas recentes</h3>
-          <p className="text-meta mt-1">Principais alertas da frota nas últimas horas</p>
+          <p className="text-meta mt-1">Principais alertas do período selecionado</p>
         </div>
         {recentAlerts.length > 0 ? (
           <div className="grid gap-3">

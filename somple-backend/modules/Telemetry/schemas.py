@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
@@ -10,13 +10,13 @@ class CreateTelemetryRequest(BaseModel):
     rainfall_mm: float = Field(ge=0)
     temperature_c: float = Field(ge=-50, le=80)
     soil_moisture_pct: float = Field(ge=0, le=100)
-    soil_type: str
+    soil_type: Literal["arenoso", "argiloso", "misto", "siltoso"]
     slope_degrees: float = Field(ge=0, le=90)
     distance_to_water_m: float = Field(ge=0)
     speed_kmh: float = Field(ge=0)
     latitude: float = Field(ge=-90, le=90)
     longitude: float = Field(ge=-180, le=180)
-    source: str = "simulator"
+    source: Literal["simulator", "device", "manual", "import"] = "simulator"
 
 
 class AssessmentSummary(BaseModel):

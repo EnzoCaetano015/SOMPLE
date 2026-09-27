@@ -1,7 +1,7 @@
 import type { GetEquipmentList } from "@/api/models/equipment.types";
 import type { FilterDefinition } from "@/components/FilterBar/FilterBar.types";
 import { formatTimeAgo } from "@/lib/utils/format.utils";
-import { getRiskLevelFromScore } from "@/lib/utils/risk.utils";
+import { Enum } from "@/api/enums/enum";
 import type { EquipmentItemViewModel, EquipmentViewModel } from "./Equipment.types";
 
 export const DEFAULT_EQUIPMENT_FILTERS: FilterDefinition[] = [
@@ -46,7 +46,7 @@ export const mapEquipmentItems = (data: GetEquipmentList.Response): EquipmentIte
     type: item.equipment_type,
     region: item.region_name ?? "-",
     riskScore: item.risk_score ?? 0,
-    riskLevel: item.risk_level ?? getRiskLevelFromScore(item.risk_score ?? 0),
+    riskLevel: item.risk_level ?? Enum.RiskLevel.LOW,
     lastUpdate: formatTimeAgo(item.last_reading_at),
   }));
 

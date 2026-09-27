@@ -1,9 +1,9 @@
 import type { CSSProperties } from "react";
 import type { RiskFactorBarProps } from "./RiskFactorBar.types";
-import { getRiskLevelFromScore, RISK_LEVEL_MAP } from "@/lib/utils/risk.utils";
 
 export const RiskFactorBar = ({ label, value, weight }: RiskFactorBarProps) => {
-  const barClass = RISK_LEVEL_MAP[getRiskLevelFromScore(value)].barClass;
+  const barClass =
+    value >= 75 ? "bg-somple-danger" : value >= 40 ? "bg-somple-highlight" : "bg-somple-field";
 
   return (
     <div>

@@ -1,4 +1,7 @@
+import pytest
+
 from modules.Telemetry import service as telemetry_service
+from core.database import Database
 
 
 API = "/api/v1"
@@ -98,3 +101,69 @@ def test_audit_events_endpoint_filters_failed_login(client, auth_headers):
         "email": "operador@somple.com",
         "reason": "invalid_credentials",
     }
+
+
+def test_duplicate_telemetry_returns_conflict_without_extra_pipeline_rows(
+    client, auth_headers, operation_id, make_telemetry_payload, db_rows
+):
+    payload = make_telemetry_payload(operation_id)
+    headers = auth_headers("operador@somple.com")
+    first = client.post(f"{API}/telemetry", headers=headers, json=payload)
+    duplicate = client.post(f"{API}/telemetry", headers=headers, json=payload)
+
+    assert first.status_code == 201
+    assert duplicate.status_code == 409
+    assert duplicate.json()["error"]["message"] == "Telemetry event already processed"
+    assert len(db_rows("SELECT id FROM telemetry_readings")) == 1
+    assert len(db_rows("SELECT id FROM risk_assessments")) == 1
+
+
+def test_missing_active_model_rolls_back_reading(
+    client, auth_headers, operation_id, make_telemetry_payload, db_rows
+):
+    with Database.transaction() as conn:
+        conn.execute("UPDATE model_versions SET is_active = FALSE")
+
+    response = client.post(
+        f"{API}/telemetry",
+        headers=auth_headers("operador@somple.com"),
+        json=make_telemetry_payload(operation_id),
+    )
+
+    assert response.status_code == 503
+    assert db_rows("SELECT id FROM telemetry_readings") == []
+    assert db_rows("SELECT id FROM risk_assessments") == []
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [("source", "unknown"), ("soil_type", "unknown"), ("soil_moisture_pct", -1),
+     ("soil_moisture_pct", 101), ("latitude", -91), ("longitude", 181),
+     ("rainfall_mm", -1), ("speed_kmh", -1)],
+)
+def test_invalid_telemetry_does_not_persist(
+    client, auth_headers, operation_id, make_telemetry_payload, db_rows, field, value
+):
+    payload = make_telemetry_payload(operation_id)
+    payload[field] = value
+    response = client.post(f"{API}/telemetry", headers=auth_headers("operador@somple.com"), json=payload)
+    assert response.status_code == 422
+    assert db_rows("SELECT id FROM telemetry_readings") == []
+
+
+def test_intermediate_failure_rolls_back_entire_pipeline(
+    client, auth_headers, operation_id, make_telemetry_payload, db_rows, monkeypatch
+):
+    def fail_assessment(*_args, **_kwargs):
+        raise RuntimeError("induced assessment failure")
+
+    monkeypatch.setattr(telemetry_service.TelemetryRepository, "insert_assessment", fail_assessment)
+    headers = auth_headers("operador@somple.com")
+    with pytest.raises(RuntimeError, match="induced assessment failure"):
+        client.post(
+            f"{API}/telemetry",
+            headers=headers,
+            json=make_telemetry_payload(operation_id),
+        )
+    assert db_rows("SELECT id FROM telemetry_readings") == []
+    assert db_rows("SELECT id FROM risk_assessments") == []

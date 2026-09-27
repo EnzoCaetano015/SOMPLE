@@ -144,14 +144,24 @@ def upsert_demo_data() -> None:
                 (eq["id"], now - timedelta(days=45), eq["id"]),
             )
 
-        artifact = ARTIFACTS_DIR / f"{settings.model_name}-v1.0.0.joblib"
-        metadata_path = ARTIFACTS_DIR / f"{settings.model_name}-v1.0.0.json"
+        candidates = sorted(ARTIFACTS_DIR.glob(f"{settings.model_name}-v*.joblib"))
+        if not candidates:
+            raise RuntimeError("No model artifact available for demo data")
+        artifact = candidates[-1]
+        metadata_path = artifact.with_suffix(".json")
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        version = metadata["version"]
         sha256 = None
         metrics = {}
         if artifact.exists():
             sha256 = hashlib.sha256(artifact.read_bytes()).hexdigest()
         if metadata_path.exists():
-            metrics = json.loads(metadata_path.read_text(encoding="utf-8")).get("metrics", {})
+            metrics = metadata.get("metrics", {})
+
+        conn.execute(
+            "UPDATE model_versions SET is_active = FALSE WHERE model_name = %s AND is_active = TRUE",
+            (settings.model_name,),
+        )
 
         conn.execute(
             """
@@ -159,7 +169,7 @@ def upsert_demo_data() -> None:
                 model_name, version, artifact_uri, artifact_sha256,
                 training_dataset_version, metrics, is_active
             )
-            VALUES (%s, '1.0.0', %s, %s, 'sprint2-v1', %s::jsonb, TRUE)
+            VALUES (%s, %s, %s, %s, %s, %s::jsonb, TRUE)
             ON CONFLICT (model_name, version) DO UPDATE
             SET artifact_uri = EXCLUDED.artifact_uri,
                 artifact_sha256 = EXCLUDED.artifact_sha256,
@@ -168,8 +178,10 @@ def upsert_demo_data() -> None:
             """,
             (
                 settings.model_name,
+                version,
                 str(artifact),
                 sha256,
+                metadata.get("dataset_version"),
                 json.dumps(metrics),
             ),
         )

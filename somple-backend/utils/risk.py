@@ -5,6 +5,14 @@ RISK_LEVEL_ORDER = {
     "critical": 3,
 }
 
+RISK_POLICY_VERSION = "score-thresholds-v1"
+RISK_THRESHOLDS = {
+    "low": {"min": 0, "max": 24},
+    "medium": {"min": 25, "max": 49},
+    "high": {"min": 50, "max": 74},
+    "critical": {"min": 75, "max": 100},
+}
+
 RISK_LEVEL_FROM_SCORE = (
     (25, "low"),
     (50, "medium"),

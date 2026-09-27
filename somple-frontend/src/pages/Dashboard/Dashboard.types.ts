@@ -43,10 +43,25 @@ export type DashboardDistributionSlice = {
 
 export type DashboardViewModel = {
   kpis: DashboardKpiViewModel[];
-  fleetScore: number;
+  maxRiskScore: number;
+  maxRiskLevel: Enum.RiskLevel;
   ranking: DashboardRankingItemViewModel[];
   riskEvolutionData: DashboardChartPoint[];
   riskDistributionData: DashboardDistributionSlice[];
   recentAlerts: DashboardAlertViewModel[];
   filters: FilterDefinition[];
+  report: {
+    averageRiskScore: number;
+    maxRiskScore: number;
+    assessmentCount: number;
+    alertCount: number;
+  };
+  trends: Array<{
+    key: string;
+    label: string;
+    averageRiskScore: number;
+    maxRiskScore: number;
+    assessmentCount: number;
+    alertCount: number;
+  }>;
 };

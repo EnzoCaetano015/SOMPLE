@@ -1,6 +1,6 @@
 import { Activity, AlertTriangle, BellRing, Briefcase } from "lucide-react";
 
-import type { GetDashboard } from "@/api/models/dashboard.types";
+import type { GetDashboard, GetDashboardFilterOptions } from "@/api/models/dashboard.types";
 import { Enum } from "@/api/enums/enum";
 import { formatTimeAgo } from "@/lib/utils/format.utils";
 import { getRiskPresentation } from "@/lib/utils/risk.utils";
@@ -27,23 +27,13 @@ export const DEFAULT_DASHBOARD_FILTERS = [
     id: "region",
     label: "Região",
     value: "all",
-    options: [
-      { value: "all", label: "Todas" },
-      { value: "1", label: "Talhão Norte" },
-      { value: "2", label: "Talhão Leste" },
-      { value: "3", label: "Talhão Sul" },
-    ],
+    options: [{ value: "all", label: "Todas" }],
   },
   {
-    id: "operation",
-    label: "Operação",
+    id: "operation_category",
+    label: "Categoria",
     value: "all",
-    options: [
-      { value: "all", label: "Todas" },
-      { value: "colheita", label: "Colheita" },
-      { value: "plantio", label: "Plantio" },
-      { value: "pulverizacao", label: "Pulverização" },
-    ],
+    options: [{ value: "all", label: "Todas" }],
   },
 ];
 
@@ -83,7 +73,7 @@ export const mapDashboardKpis = (summary: GetDashboard.Summary): DashboardKpiVie
   {
     label: "Score médio da frota",
     value: String(summary.average_risk_score),
-    hint: "Média ponderada",
+    hint: "Média simples do recorte",
     hintClassName: "text-somple-muted",
     iconClassName: "bg-somple-surface text-somple-ink",
     iconName: "Activity",
@@ -131,7 +121,8 @@ export const mapDashboardViewModel = (
   filters = DEFAULT_DASHBOARD_FILTERS,
 ): DashboardViewModel => ({
   kpis: mapDashboardKpis(data.summary),
-  fleetScore: data.summary.fleet_risk_score,
+  maxRiskScore: data.summary.max_risk_score,
+  maxRiskLevel: data.summary.max_risk_level,
   ranking: mapDashboardRanking(data.ranking),
   riskEvolutionData: mapRiskEvolutionData(data.risk_evolution),
   riskDistributionData: mapRiskDistributionData(data.risk_distribution),
@@ -144,7 +135,39 @@ export const mapDashboardViewModel = (
     riskLevel: alert.risk_level,
   })),
   filters,
+  report: {
+    averageRiskScore: data.report.average_risk_score,
+    maxRiskScore: data.report.max_risk_score,
+    assessmentCount: data.report.assessment_count,
+    alertCount: data.report.alert_count,
+  },
+  trends: data.trends.by_operation_category.map((item) => ({
+    key: item.key,
+    label: item.label,
+    averageRiskScore: item.average_risk_score,
+    maxRiskScore: item.max_risk_score,
+    assessmentCount: item.assessment_count,
+    alertCount: item.alert_count,
+  })),
 });
+
+export const applyDashboardFilterOptions = (
+  filters: DashboardViewModel["filters"],
+  options?: GetDashboardFilterOptions.Response,
+) =>
+  filters.map((filter) => {
+    if (!options) return filter;
+    if (filter.id === "region") {
+      return { ...filter, options: [{ value: "all", label: "Todas" }, ...options.regions] };
+    }
+    if (filter.id === "operation_category") {
+      return {
+        ...filter,
+        options: [{ value: "all", label: "Todas" }, ...options.operation_categories],
+      };
+    }
+    return filter;
+  });
 
 export const updateDashboardFilter = (
   filters: DashboardViewModel["filters"],
@@ -155,11 +178,14 @@ export const updateDashboardFilter = (
 export const dashboardFiltersToParams = (filters: DashboardViewModel["filters"]) => {
   const period = filters.find((f) => f.id === "period")?.value;
   const region = filters.find((f) => f.id === "region")?.value;
-  const operation = filters.find((f) => f.id === "operation")?.value;
+  const operationCategory = filters.find((f) => f.id === "operation_category")?.value;
 
   return {
-    period: period && period !== "all" ? period : undefined,
+    period: period && period !== "all" ? (period as GetDashboard.Params["period"]) : undefined,
     region_id: region && region !== "all" ? Number(region) : undefined,
-    operation_type: operation && operation !== "all" ? operation : undefined,
+    operation_category:
+      operationCategory && operationCategory !== "all"
+        ? (operationCategory as GetDashboard.Params["operation_category"])
+        : undefined,
   };
 };

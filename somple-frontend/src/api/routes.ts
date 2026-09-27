@@ -3,7 +3,10 @@ export const API_ROUTES = {
     login: "/auth/login",
     logout: "/auth/logout",
   },
-  dashboard: "/dashboard",
+  dashboard: {
+    summary: "/dashboard",
+    filterOptions: "/dashboard/filter-options",
+  },
   monitoring: "/monitoring",
   equipment: {
     list: "/equipment",

@@ -2,6 +2,7 @@ from fastapi import Request
 
 from core.authorization import AuthenticatedUser
 from core.database import Database
+from psycopg.errors import UniqueViolation
 from ml.explainer import Explainer
 from ml.feature_builder import FeatureBuilder
 from ml.recommendations import build_recommendation
@@ -14,8 +15,16 @@ from modules.Telemetry.schemas import (
     CreateTelemetryRequest,
     CreateTelemetryResponse,
 )
-from utils.errors import ResourceNotFoundError, ValidationError
-from utils.risk import is_high_risk
+from utils.errors import ConflictError, ResourceNotFoundError
+from utils.risk import RISK_POLICY_VERSION, RISK_THRESHOLDS, is_high_risk
+
+
+RISK_LEVEL_LABELS = {
+    "low": "baixo",
+    "medium": "moderado",
+    "high": "alto",
+    "critical": "crítico",
+}
 
 
 class TelemetryService:
@@ -31,8 +40,12 @@ class TelemetryService:
         if operation is None:
             raise ResourceNotFoundError("Operation not found")
 
+        model_version = self._repository.get_active_model_version(self._conn)
         runtime = get_model_runtime()
-        runtime.load()
+        runtime.load(
+            version=model_version["version"],
+            expected_sha256=model_version.get("artifact_sha256"),
+        )
 
         reading_id = self._repository.insert_reading(
             self._conn,
@@ -71,7 +84,6 @@ class TelemetryService:
         factors = Explainer.explain(pipeline, features, prediction)
         recommendation = build_recommendation(features, factors)
 
-        model_version = self._repository.get_active_model_version(self._conn)
         assessment_id = self._repository.insert_assessment(
             self._conn,
             {
@@ -83,8 +95,13 @@ class TelemetryService:
                 "confidence": prediction.confidence,
                 "input_snapshot": features.model_dump(),
                 "output_snapshot": {
+                    "risk_score": prediction.risk_score,
+                    "risk_level": prediction.risk_level,
+                    "confidence": prediction.confidence,
                     "class_probabilities": prediction.class_probabilities,
                     "score_method": prediction.score_method,
+                    "risk_policy_version": RISK_POLICY_VERSION,
+                    "risk_thresholds": RISK_THRESHOLDS,
                     "explanation_method": factors[0]["explanation_method"] if factors else prediction.explanation_method,
                 },
                 "explanation_summary": recommendation,
@@ -96,13 +113,17 @@ class TelemetryService:
 
         alert_summary = AlertSummary(generated=False, id=None)
         if is_high_risk(prediction.risk_level):
+            risk_label = RISK_LEVEL_LABELS[prediction.risk_level]
             alert_id = self._repository.insert_alert(
                 self._conn,
                 {
                     "assessment_id": assessment_id,
                     "severity": prediction.risk_level,
-                    "title": f"Risco {prediction.risk_level} detectado",
-                    "message": f"Score {prediction.risk_score} identificado para operação {payload.operation_id}.",
+                    "title": f"Risco {risk_label} detectado",
+                    "message": (
+                        f"Score {prediction.risk_score} ({risk_label}) identificado "
+                        f"para a operação {payload.operation_id}."
+                    ),
                     "recommendation": recommendation,
                 },
             )
@@ -149,14 +170,11 @@ class TelemetryService:
             alert=alert_summary,
         )
 
-    @staticmethod
-    def validate_payload(payload: CreateTelemetryRequest) -> CreateTelemetryRequest:
-        if payload.soil_moisture_pct > 100 or payload.soil_moisture_pct < 0:
-            raise ValidationError("soil_moisture_pct must be between 0 and 100")
-        return payload
-
-
 def create_telemetry(payload: CreateTelemetryRequest, request: Request, user: AuthenticatedUser) -> CreateTelemetryResponse:
-    TelemetryService.validate_payload(payload)
-    with Database.transaction() as conn:
-        return TelemetryService(conn).create(payload, request, user)
+    try:
+        with Database.transaction() as conn:
+            return TelemetryService(conn).create(payload, request, user)
+    except UniqueViolation as exc:
+        if exc.diag.constraint_name == "uq_telemetry_event":
+            raise ConflictError("Telemetry event already processed") from exc
+        raise

@@ -29,7 +29,7 @@ class TelemetryRepository:
     def get_active_model_version(conn: Connection) -> dict:
         row = conn.execute(
             """
-            SELECT id, model_name, version
+            SELECT id, model_name, version, artifact_sha256
             FROM model_versions
             WHERE is_active = TRUE
             ORDER BY id DESC
@@ -37,7 +37,9 @@ class TelemetryRepository:
             """
         ).fetchone()
         if row is None:
-            raise ValueError("No active model version configured")
+            from utils.errors import ModelUnavailableError
+
+            raise ModelUnavailableError("No active model version configured")
         return row
 
     @staticmethod
