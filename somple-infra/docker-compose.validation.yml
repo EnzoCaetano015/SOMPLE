@@ -6,6 +6,8 @@ services:
 
   backend:
     container_name: somple-validation-backend
+    environment:
+      CORS_ORIGINS: http://localhost:18080
     ports: !override
       - "18000:8000"
 

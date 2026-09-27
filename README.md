@@ -630,6 +630,13 @@ As seis capturas pós-Sprint 3 ficam em `docs/evidencias/funcional`. O
 e resultado observado para dashboard, monitoramento, assessment com explicabilidade, alerta crítico,
 auditoria do pipeline e login inválido. Todos os PNGs foram capturados do sistema local em execução.
 
+### Dashboard e filtros
+
+As cinco capturas atuais em [`docs/evidencias/dashboard-relatorios`](docs/evidencias/dashboard-relatorios/)
+registram os cenários normal, elevado, próximo à água, transporte e filtro pelo Talhão Norte.
+As imagens foram produzidas pelo ambiente Docker isolado e mostram os filtros, KPIs, ranking e
+relatório consolidado calculados pela API.
+
 ### Aplicação hospedada na AWS
 
 <p align="center">

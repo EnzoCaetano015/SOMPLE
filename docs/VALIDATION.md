@@ -1,6 +1,6 @@
 # Relatório de validação do projeto
 
-Data: 26/09/2026.
+Data: 27/09/2026.
 
 ## Resultado executivo
 
@@ -12,7 +12,7 @@ Data: 26/09/2026.
 | Dashboard e filtros consistentes | ATENDE | testes de filtros e inspeção visual dos três recortes operacionais |
 | Confiabilidade e validação integrada | ATENDE | 81 testes backend, 7 frontend, build e validador HTTP aprovados |
 | Segurança e matriz de acesso | ATENDE | matriz RBAC, testes 401/403, auditoria e request ID |
-| Execução e evidências | ATENDE PARCIALMENTE | stack limpa aprovada e evidências textuais reais; captura binária ainda não anexada |
+| Execução e evidências | ATENDE | stack limpa aprovada e cinco capturas atuais do dashboard anexadas |
 | Arquitetura | ATENDE | componentes e sequência Mermaid refletem o código existente |
 | Documentação consolidada | ATENDE | arquitetura, métricas, segurança, execução e limitações documentadas |
 | Roteiro de vídeo | ATENDE | roteiro de até cinco minutos e placeholder explícito criados, sem gravação ou URL inventada |
@@ -22,7 +22,7 @@ Data: 26/09/2026.
 
 - **Dados e modelo — ATENDE:** validações, duplicidade `409`, rollback, treino reproduzível, SHA, carregamento e fronteiras aprovados.
 - **Aplicação — ATENDE:** filtros isolados e combinados, relatório, estado vazio, RBAC, auditoria e build aprovados.
-- **Entrega — ATENDE PARCIALMENTE:** ambiente recriado do zero e documentação concluída; a captura exportada ainda depende de inclusão no repositório.
+- **Entrega — ATENDE:** ambiente recriado do zero, documentação concluída e cenários normal, elevado, próximo à água, transporte e filtro regional registrados visualmente.
 
 ## Limitações verificadas
 
@@ -33,4 +33,4 @@ Data: 26/09/2026.
 
 ## Conclusão
 
-Os requisitos implementáveis por código e execução automatizada foram validados. Para encerrar integralmente o pacote de evidências, ainda é necessário anexar ao repositório uma captura exportada. A gravação/publicação do vídeo é uma etapa humana posterior já preparada pelo roteiro e pelo placeholder exigidos.
+Os requisitos implementáveis por código, execução automatizada e evidência visual foram validados. As cinco capturas atuais do dashboard estão versionadas em `docs/evidencias/dashboard-relatorios`. A gravação/publicação do vídeo é uma etapa humana posterior já preparada pelo roteiro e pelo placeholder exigidos.
