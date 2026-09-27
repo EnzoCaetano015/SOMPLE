@@ -116,6 +116,16 @@ export const mapRiskDistributionData = (
     dotClass: DISTRIBUTION_COLOR_MAP[slice.risk_level].dotClass,
   }));
 
+const mapDashboardTrends = (items: GetDashboard.TrendItem[]) =>
+  items.map((item) => ({
+    key: item.key,
+    label: item.label,
+    averageRiskScore: item.average_risk_score,
+    maxRiskScore: item.max_risk_score,
+    assessmentCount: item.assessment_count,
+    alertCount: item.alert_count,
+  }));
+
 export const mapDashboardViewModel = (
   data: GetDashboard.Response,
   filters = DEFAULT_DASHBOARD_FILTERS,
@@ -141,14 +151,11 @@ export const mapDashboardViewModel = (
     assessmentCount: data.report.assessment_count,
     alertCount: data.report.alert_count,
   },
-  trends: data.trends.by_operation_category.map((item) => ({
-    key: item.key,
-    label: item.label,
-    averageRiskScore: item.average_risk_score,
-    maxRiskScore: item.max_risk_score,
-    assessmentCount: item.assessment_count,
-    alertCount: item.alert_count,
-  })),
+  trends: {
+    byEquipment: mapDashboardTrends(data.trends.by_equipment),
+    byRegion: mapDashboardTrends(data.trends.by_region),
+    byOperationCategory: mapDashboardTrends(data.trends.by_operation_category),
+  },
 });
 
 export const applyDashboardFilterOptions = (

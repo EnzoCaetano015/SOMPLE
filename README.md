@@ -556,7 +556,7 @@ Com o ambiente completo em execução, valide o contrato público de ponta a pon
 docker compose exec backend python -m scripts.validate_mvp
 ```
 
-Em 26/09/2026, a validação final registrou `81 passed` no backend e 6 testes aprovados no
+Em 26/09/2026, a validação final registrou `81 passed` no backend e 7 testes aprovados no
 frontend. O check e o build foram concluídos; permaneceram quatro avisos preexistentes de Fast
 Refresh e o aviso não bloqueante de tamanho do chunk principal.
 

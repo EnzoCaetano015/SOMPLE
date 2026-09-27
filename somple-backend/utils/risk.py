@@ -13,14 +13,6 @@ RISK_THRESHOLDS = {
     "critical": {"min": 75, "max": 100},
 }
 
-RISK_LEVEL_FROM_SCORE = (
-    (25, "low"),
-    (50, "medium"),
-    (75, "high"),
-    (101, "critical"),
-)
-
-
 def score_from_probabilities(probabilities: dict[str, float]) -> tuple[int, str]:
     expected = sum(RISK_LEVEL_ORDER[level] * prob for level, prob in probabilities.items())
     score = round((expected / 3) * 100)
@@ -30,8 +22,9 @@ def score_from_probabilities(probabilities: dict[str, float]) -> tuple[int, str]
 
 
 def risk_level_from_score(score: int) -> str:
-    for threshold, level in RISK_LEVEL_FROM_SCORE:
-        if score < threshold:
+    bounded_score = max(0, min(100, score))
+    for level, bounds in RISK_THRESHOLDS.items():
+        if bounds["min"] <= bounded_score <= bounds["max"]:
             return level
     return "critical"
 

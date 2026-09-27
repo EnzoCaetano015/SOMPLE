@@ -6,11 +6,11 @@ Data: 26/09/2026.
 
 | Requisito | Status | Evidência objetiva |
 | --- | --- | --- |
-| Domínios, idempotência e rollback | ATENDE | migration 005 e testes de API, concorrência e rollback |
+| Domínios, idempotência e rollback | ATENDE | migration 005 e testes de API, idempotência e rollback |
 | Treinamento e modelo 1.1.0 | ATENDE | artefato, metadata, relatórios, migration 006 e SHA conferido |
 | Política única de risco | ATENDE | testes de fronteira, snapshot completo e alertas somente alto/crítico |
 | Dashboard e filtros consistentes | ATENDE | testes de filtros e inspeção visual dos três recortes operacionais |
-| Confiabilidade e validação integrada | ATENDE | 81 testes backend, 6 frontend, build e validador HTTP aprovados |
+| Confiabilidade e validação integrada | ATENDE | 81 testes backend, 7 frontend, build e validador HTTP aprovados |
 | Segurança e matriz de acesso | ATENDE | matriz RBAC, testes 401/403, auditoria e request ID |
 | Execução e evidências | ATENDE PARCIALMENTE | stack limpa aprovada e evidências textuais reais; captura binária ainda não anexada |
 | Arquitetura | ATENDE | componentes e sequência Mermaid refletem o código existente |

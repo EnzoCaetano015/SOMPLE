@@ -14,6 +14,7 @@ import { Activity, AlertTriangle, BellOff, BellRing, ClipboardList } from "lucid
 
 import { useDashboard } from "./Dashboard.hook";
 import { KPI_ICON_MAP } from "./Dashboard.utils";
+import type { DashboardTrendViewModel } from "./Dashboard.types";
 import { Enum } from "@/api/enums/enum";
 import { AlertCard } from "@/components/AlertCard/AlertCard";
 import { ChartCard } from "@/components/ChartCard/ChartCard";
@@ -34,8 +35,48 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { formatCount, formatSharePercent } from "@/lib/utils/format.utils";
+
+type TrendTableProps = {
+  groupLabel: string;
+  ariaLabel: string;
+  items: DashboardTrendViewModel[];
+};
+
+const TrendTable = ({ groupLabel, ariaLabel, items }: TrendTableProps) => {
+  if (items.length === 0) {
+    return <div className="p-6 text-sm text-somple-muted">Nenhum dado no recorte selecionado.</div>;
+  }
+
+  return (
+    <div className="overflow-x-auto" role="region" aria-label={ariaLabel}>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>{groupLabel}</TableHead>
+            <TableHead className="text-right">Score médio</TableHead>
+            <TableHead className="text-right">Score máximo</TableHead>
+            <TableHead className="text-right">Avaliações</TableHead>
+            <TableHead className="text-right">Alertas</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {items.map((item) => (
+            <TableRow key={item.key}>
+              <TableCell>{item.label}</TableCell>
+              <TableCell className="text-right font-mono-num">{item.averageRiskScore}</TableCell>
+              <TableCell className="text-right font-mono-num">{item.maxRiskScore}</TableCell>
+              <TableCell className="text-right font-mono-num">{item.assessmentCount}</TableCell>
+              <TableCell className="text-right font-mono-num">{item.alertCount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
 
 export const Dashboard = () => {
   const {
@@ -175,42 +216,45 @@ export const Dashboard = () => {
         </div>
         <NeumorphicCard className="overflow-hidden p-0">
           <div className="border-b border-somple-border/50 px-6 py-4">
-            <h4 className="font-semibold text-somple-ink">Comparativo por categoria de operação</h4>
+            <h4 className="font-semibold text-somple-ink">Comparativos do recorte</h4>
+            <p className="text-meta mt-1">Tendências calculadas com os filtros selecionados.</p>
           </div>
-          {trends && trends.length > 0 ? (
-            <div className="overflow-x-auto" role="region" aria-label="Relatório por categoria">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Categoria</TableHead>
-                    <TableHead className="text-right">Score médio</TableHead>
-                    <TableHead className="text-right">Score máximo</TableHead>
-                    <TableHead className="text-right">Avaliações</TableHead>
-                    <TableHead className="text-right">Alertas</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {trends.map((item) => (
-                    <TableRow key={item.key}>
-                      <TableCell>{item.label}</TableCell>
-                      <TableCell className="text-right font-mono-num">
-                        {item.averageRiskScore}
-                      </TableCell>
-                      <TableCell className="text-right font-mono-num">
-                        {item.maxRiskScore}
-                      </TableCell>
-                      <TableCell className="text-right font-mono-num">
-                        {item.assessmentCount}
-                      </TableCell>
-                      <TableCell className="text-right font-mono-num">{item.alertCount}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+          <Tabs defaultValue="equipment" className="gap-0">
+            <div className="overflow-x-auto px-4 pt-4 sm:px-6">
+              <TabsList aria-label="Agrupamento das tendências" className="min-w-max">
+                <TabsTrigger value="equipment" className="min-w-32">
+                  Por equipamento
+                </TabsTrigger>
+                <TabsTrigger value="region" className="min-w-32">
+                  Por região
+                </TabsTrigger>
+                <TabsTrigger value="operation" className="min-w-32">
+                  Por operação
+                </TabsTrigger>
+              </TabsList>
             </div>
-          ) : (
-            <div className="p-6 text-sm text-somple-muted">Nenhum dado no recorte selecionado.</div>
-          )}
+            <TabsContent value="equipment">
+              <TrendTable
+                groupLabel="Equipamento"
+                ariaLabel="Tendências por equipamento"
+                items={trends?.byEquipment ?? []}
+              />
+            </TabsContent>
+            <TabsContent value="region">
+              <TrendTable
+                groupLabel="Região"
+                ariaLabel="Tendências por região"
+                items={trends?.byRegion ?? []}
+              />
+            </TabsContent>
+            <TabsContent value="operation">
+              <TrendTable
+                groupLabel="Operação"
+                ariaLabel="Tendências por categoria de operação"
+                items={trends?.byOperationCategory ?? []}
+              />
+            </TabsContent>
+          </Tabs>
         </NeumorphicCard>
       </section>
 

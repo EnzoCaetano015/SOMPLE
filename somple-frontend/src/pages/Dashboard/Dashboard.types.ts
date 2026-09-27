@@ -41,6 +41,15 @@ export type DashboardDistributionSlice = {
   dotClass: string;
 };
 
+export type DashboardTrendViewModel = {
+  key: string;
+  label: string;
+  averageRiskScore: number;
+  maxRiskScore: number;
+  assessmentCount: number;
+  alertCount: number;
+};
+
 export type DashboardViewModel = {
   kpis: DashboardKpiViewModel[];
   maxRiskScore: number;
@@ -56,12 +65,9 @@ export type DashboardViewModel = {
     assessmentCount: number;
     alertCount: number;
   };
-  trends: Array<{
-    key: string;
-    label: string;
-    averageRiskScore: number;
-    maxRiskScore: number;
-    assessmentCount: number;
-    alertCount: number;
-  }>;
+  trends: {
+    byEquipment: DashboardTrendViewModel[];
+    byRegion: DashboardTrendViewModel[];
+    byOperationCategory: DashboardTrendViewModel[];
+  };
 };

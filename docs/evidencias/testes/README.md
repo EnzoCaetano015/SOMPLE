@@ -6,7 +6,7 @@ Execução final em 26/09/2026:
 | --- | --- |
 | `.venv\\Scripts\\python.exe -m pytest` | 81 passed, 2 warnings de depreciação |
 | `vp check` | 0 erros, 4 warnings preexistentes de Fast Refresh |
-| `vp test` | 2 arquivos e 6 testes aprovados |
+| `vp test` | 2 arquivos e 7 testes aprovados |
 | `vp run build` | build aprovado; warning não bloqueante de chunk acima de 500 kB |
 | `python -m scripts.validate_mvp` na stack limpa | 10 checks `PASS` |
 

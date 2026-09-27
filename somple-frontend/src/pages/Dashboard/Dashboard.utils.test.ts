@@ -35,8 +35,26 @@ const response: GetDashboard.Response = {
     evolution: [],
   },
   trends: {
-    by_equipment: [],
-    by_region: [],
+    by_equipment: [
+      {
+        key: "EQ-001",
+        label: "Colheitadeira EQ-001",
+        average_risk_score: 51,
+        max_risk_score: 68,
+        assessment_count: 2,
+        alert_count: 1,
+      },
+    ],
+    by_region: [
+      {
+        key: "7",
+        label: "Talhão Oeste",
+        average_risk_score: 42,
+        max_risk_score: 68,
+        assessment_count: 3,
+        alert_count: 1,
+      },
+    ],
     by_operation_category: [
       {
         key: "field",
@@ -56,7 +74,21 @@ describe("dashboard mappings", () => {
     expect(viewModel.maxRiskScore).toBe(68);
     expect(viewModel.maxRiskLevel).toBe(Enum.RiskLevel.HIGH);
     expect(viewModel.report.assessmentCount).toBe(3);
-    expect(viewModel.trends[0]?.label).toBe("Campo");
+    expect(viewModel.trends.byEquipment[0]?.label).toBe("Colheitadeira EQ-001");
+    expect(viewModel.trends.byRegion[0]?.label).toBe("Talhão Oeste");
+    expect(viewModel.trends.byOperationCategory[0]?.label).toBe("Campo");
+  });
+
+  it("preserves empty trend groupings for the dashboard empty states", () => {
+    const viewModel = mapDashboardViewModel({
+      ...response,
+      trends: { by_equipment: [], by_region: [], by_operation_category: [] },
+    });
+    expect(viewModel.trends).toEqual({
+      byEquipment: [],
+      byRegion: [],
+      byOperationCategory: [],
+    });
   });
 
   it("maps region and category filters to API parameters", () => {
