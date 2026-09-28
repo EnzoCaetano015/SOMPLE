@@ -689,12 +689,12 @@ relatório consolidado calculados pela API.
 | Modelo | Artefato v1.1.0, métricas e SHA-256 | [`modelo`](docs/evidencias/modelo/) |
 | Score e alertas | Política `score-thresholds-v1` | [`score-alertas`](docs/evidencias/score-alertas/) |
 | Integração | Telemetria até dashboard e auditoria | [`fluxo-ponta-a-ponta`](docs/evidencias/fluxo-ponta-a-ponta/) |
-| Segurança e RBAC | JWT, Argon2, matriz e logs sanitizados | [`SECURITY.md`](docs/SECURITY.md) |
+| Segurança e RBAC | JWT, Argon2, matriz e logs sanitizados | [`seguranca`](docs/evidencias/seguranca/) |
 | Relatórios e filtros | Período, região e categoria no mesmo recorte | [`dashboard-relatorios`](docs/evidencias/dashboard-relatorios/) |
 | Testes | Backend, frontend, build e validação HTTP | [`testes`](docs/evidencias/testes/) |
 | Evidências | Pacote organizado e reproduzível | [`docs/evidencias`](docs/evidencias/) |
-| Validação final | Classificação objetiva de todos os requisitos | [`VALIDATION.md`](docs/VALIDATION.md) |
-| Vídeo | Roteiro pronto; link pendente de gravação humana | [`VIDEO.md`](docs/VIDEO.md) |
+| Validação final | Testes e validação integrada do MVP | [`testes`](docs/evidencias/testes/) |
+| Vídeo | Demonstração final gravada e publicada | [YouTube](https://youtu.be/yVtvQo3MV7s) |
 
 ## Decisões técnicas
 
@@ -753,11 +753,11 @@ Para o MVP, o runtime permanece no FastAPI. Um microsserviço separado adicionar
 - [x] Política única de score, nível e alerta
 - [x] Dashboard com filtros consistentes e relatório consolidado
 - [x] Arquitetura e matriz de acesso consolidadas
-- [ ] Vídeo final gravado e publicado
+- [x] Vídeo final gravado e publicado
 
 ## Vídeo de demonstração
 
 - Sprint 1 — [https://www.youtube.com/watch?v=04eJA7Vp_PU](https://www.youtube.com/watch?v=04eJA7Vp_PU)
 - Sprint 2 — [https://www.youtube.com/watch?v=06a06tTTZ3s](https://www.youtube.com/watch?v=06a06tTTZ3s)
 - Sprint 3 — [https://www.youtube.com/watch?v=YHfipkk08CA](https://www.youtube.com/watch?v=YHfipkk08CA)
-- Vídeo final — **pendente de gravação**; roteiro em [`docs/VIDEO.md`](docs/VIDEO.md)
+- Vídeo final — [https://youtu.be/yVtvQo3MV7s](https://youtu.be/yVtvQo3MV7s)

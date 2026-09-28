@@ -6,5 +6,3 @@
 - O pipeline usa transação única e não inclui detalhes internos do banco nos erros de duplicidade.
 - Logs inspecionados não exibiram senha ou token.
 - A chave JWT padrão do ambiente local gera aviso de comprimento e permanece explicitamente limitada ao desenvolvimento; produção deve fornecer segredo forte e HTTPS.
-
-A matriz completa está em `docs/SECURITY.md`.

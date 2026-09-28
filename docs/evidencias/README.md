@@ -14,4 +14,4 @@ As evidências desta pasta são produzidas somente por execuções reais. Cada s
 | `funcional` | capturas funcionais da aplicação |
 | `aws` | evidências da implantação acadêmica |
 
-Ambiente de validação: Windows, Docker Desktop, PostgreSQL 16, Python 3.14.7 e Node/Vite+ conforme os manifests do repositório. Última execução: 27/09/2026. A execução limpa usou `docker-compose.validation.yml`, com volume e portas isolados. O relatório consolidado está em `docs/VALIDATION.md`.
+Ambiente de validação: Windows, Docker Desktop, PostgreSQL 16, Python 3.14.7 e Node/Vite+ conforme os manifests do repositório. Última execução: 27/09/2026. A execução limpa usou `docker-compose.validation.yml`, com volume e portas isolados.
