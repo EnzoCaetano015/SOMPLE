@@ -6,7 +6,7 @@ API = "/api/v1"
 
 @pytest.mark.parametrize(
     "path",
-    ["/dashboard", "/equipment", "/operations", "/monitoring", "/alerts", "/audit", "/audit/events"],
+    ["/dashboard", "/dashboard/filter-options", "/equipment", "/operations", "/monitoring", "/alerts", "/audit", "/audit/events"],
 )
 def test_protected_reads_require_authentication(client, path):
     assert client.get(f"{API}{path}").status_code == 401

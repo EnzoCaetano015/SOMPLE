@@ -1,4 +1,4 @@
-import { getRiskLevelFromScore } from "@/lib/utils/risk.utils";
+import type { Enum } from "@/api/enums/enum";
 
 const SCORE_COLORS: Record<string, string> = {
   low: "#3C7C3E",
@@ -7,9 +7,8 @@ const SCORE_COLORS: Record<string, string> = {
   critical: "#E63946",
 };
 
-export const buildScoreGaugeData = (score: number) => {
-  const level = getRiskLevelFromScore(score);
-  const color = SCORE_COLORS[level];
+export const buildScoreGaugeData = (score: number, riskLevel: Enum.RiskLevel) => {
+  const color = SCORE_COLORS[riskLevel];
 
   return [
     { name: "score", value: score, color },

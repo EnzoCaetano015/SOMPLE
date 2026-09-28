@@ -32,7 +32,11 @@ export const Assessment = () => {
       />
 
       <section className="grid gap-5.5 xl:grid-cols-[360px_1fr]">
-        <ScoreGauge score={assessment.score} label="Score da avaliação" />
+        <ScoreGauge
+          score={assessment.score}
+          riskLevel={assessment.riskLevel}
+          label="Score da avaliação"
+        />
         <NeumorphicCard className="grid gap-5 p-6 md:grid-cols-2">
           <div>
             <p className="text-meta">Equipamento</p>

@@ -28,7 +28,11 @@ export const EquipmentDetail = () => {
       <PageHeader title={equipment.id} subtitle={`${equipment.name} · ${equipment.type}`} />
 
       <section className="grid gap-5.5 xl:grid-cols-[360px_1fr]">
-        <ScoreGauge score={equipment.score} label="Score operacional" />
+        <ScoreGauge
+          score={equipment.score}
+          riskLevel={equipment.riskLevel}
+          label="Score operacional"
+        />
         <NeumorphicCard className="grid gap-5 p-6 md:grid-cols-2">
           <div>
             <p className="text-meta">Operação</p>

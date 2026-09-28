@@ -1,6 +1,11 @@
 export const queryKeys = {
-  dashboard: (period?: string, regionId?: number, operationType?: string) =>
-    ["dashboard", period, regionId, operationType] as const,
+  dashboard: (
+    period?: string,
+    regionId?: number,
+    operationCategory?: string,
+    operationType?: string,
+  ) => ["dashboard", period, regionId, operationCategory, operationType] as const,
+  dashboardFilterOptions: ["dashboard", "filter-options"] as const,
   monitoring: (regionId?: number, riskLevel?: string) =>
     ["monitoring", regionId, riskLevel] as const,
   equipment: (search?: string, regionId?: number, riskLevel?: string) =>

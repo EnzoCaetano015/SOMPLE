@@ -3,11 +3,11 @@ import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import type { ScoreGaugeProps } from "./ScoreGauge.types";
 import { buildScoreGaugeData } from "./ScoreGauge.utils";
 import { NeumorphicCard } from "@/components/NeumorphicCard/NeumorphicCard";
-import { getRiskPresentation, getRiskLevelFromScore } from "@/lib/utils/risk.utils";
+import { getRiskPresentation } from "@/lib/utils/risk.utils";
 
-export const ScoreGauge = ({ score, label, subtitle }: ScoreGaugeProps) => {
-  const chartData = buildScoreGaugeData(score);
-  const presentation = getRiskPresentation(getRiskLevelFromScore(score));
+export const ScoreGauge = ({ score, riskLevel, label, subtitle }: ScoreGaugeProps) => {
+  const chartData = buildScoreGaugeData(score, riskLevel);
+  const presentation = getRiskPresentation(riskLevel);
 
   return (
     <NeumorphicCard className="flex h-full flex-col p-6">

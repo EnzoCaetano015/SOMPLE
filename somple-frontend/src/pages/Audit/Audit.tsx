@@ -98,7 +98,7 @@ export const Audit = () => {
                         </TableCell>
                         <TableCell className="text-sm">{row.operation}</TableCell>
                         <TableCell
-                          className={`font-mono-num text-right text-base font-bold ${getScoreTextClass(row.score)}`}
+                          className={`font-mono-num text-right text-base font-bold ${getScoreTextClass(row.riskLevel)}`}
                         >
                           {row.score}
                         </TableCell>

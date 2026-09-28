@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 import joblib
@@ -8,7 +9,7 @@ import joblib
 from core.config import settings
 from ml.schemas import FeatureVector, RiskPrediction
 from utils.errors import ModelUnavailableError
-from utils.risk import score_from_probabilities
+from utils.risk import risk_level_from_score, score_from_probabilities
 
 ARTIFACTS_DIR = Path(__file__).resolve().parent / "artifacts"
 CLASS_LABELS = ["low", "medium", "high", "critical"]
@@ -32,15 +33,20 @@ class ModelRuntime:
     def is_loaded(self) -> bool:
         return self._pipeline is not None
 
-    def load(self) -> None:
-        if self._pipeline is not None:
+    def load(self, *, version: str | None = None, expected_sha256: str | None = None) -> None:
+        if self._pipeline is not None and (version is None or self.model_version == version):
+            if expected_sha256:
+                self._verify_artifact_sha(self._resolve_artifact_path(version), expected_sha256)
             return
 
-        artifact_path = self._resolve_artifact_path()
+        artifact_path = self._resolve_artifact_path(version)
         metadata_path = artifact_path.with_suffix(".json")
 
         if not artifact_path.exists():
             raise ModelUnavailableError(f"Model artifact not found: {artifact_path.name}")
+
+        if expected_sha256:
+            self._verify_artifact_sha(artifact_path, expected_sha256)
 
         bundle = joblib.load(artifact_path)
         if isinstance(bundle, dict):
@@ -53,15 +59,36 @@ class ModelRuntime:
         if metadata_path.exists():
             self._metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
             self.model_version = self._metadata.get("version")
+            metadata_sha = self._metadata.get("artifact_sha256")
+            if metadata_sha:
+                self._verify_artifact_sha(artifact_path, metadata_sha)
         else:
-            self.model_version = "1.0.0"
+            self.model_version = version or "1.0.0"
 
-    def _resolve_artifact_path(self) -> Path:
+        if version and self.model_version != version:
+            self._reset()
+            raise ModelUnavailableError("Model artifact version does not match the active database version")
+
+    def _resolve_artifact_path(self, version: str | None = None) -> Path:
+        if version:
+            return ARTIFACTS_DIR / f"{settings.model_name}-v{version}.joblib"
         candidates = sorted(ARTIFACTS_DIR.glob(f"{settings.model_name}-v*.joblib"))
         if candidates:
             return candidates[-1]
         legacy = ARTIFACTS_DIR / "somple-risk-classifier-v1.0.0.joblib"
         return legacy
+
+    @staticmethod
+    def _verify_artifact_sha(artifact_path: Path, expected_sha256: str) -> None:
+        actual = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        if actual.lower() != expected_sha256.lower():
+            raise ModelUnavailableError("Model artifact integrity check failed")
+
+    def _reset(self) -> None:
+        self._pipeline = None
+        self._regressor = None
+        self._metadata = None
+        self.model_version = None
 
     def predict(self, features: FeatureVector) -> RiskPrediction:
         self.load()
@@ -80,10 +107,6 @@ class ModelRuntime:
         for level in CLASS_LABELS:
             probabilities.setdefault(level, 0.0)
 
-        predicted_label = self._pipeline.predict(frame)[0]
-        risk_level = LEVEL_MAP_PT_TO_EN.get(str(predicted_label), str(predicted_label))
-        confidence = max(probabilities.values())
-
         score_method = "probability_weighted_ordinal"
         if self._regressor is not None:
             reg_score = int(round(float(self._regressor.predict(frame)[0])))
@@ -91,9 +114,10 @@ class ModelRuntime:
             risk_score = reg_score
             score_method = "regressor"
         else:
-            risk_score, derived_level = score_from_probabilities(probabilities)
-            if risk_level not in probabilities or probabilities[risk_level] < 0.25:
-                risk_level = derived_level
+            risk_score, _ = score_from_probabilities(probabilities)
+
+        risk_level = risk_level_from_score(risk_score)
+        confidence = probabilities.get(risk_level, 0.0)
 
         return RiskPrediction(
             risk_score=risk_score,

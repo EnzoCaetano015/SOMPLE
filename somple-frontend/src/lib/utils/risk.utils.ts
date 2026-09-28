@@ -56,15 +56,8 @@ export const getRiskPresentation = (level: Enum.RiskLevel): RiskPresentation => 
   return RISK_LEVEL_MAP[level];
 };
 
-export const getRiskLevelFromScore = (score: number): Enum.RiskLevel => {
-  if (score >= 85) return Enum.RiskLevel.CRITICAL;
-  if (score >= 60) return Enum.RiskLevel.HIGH;
-  if (score >= 35) return Enum.RiskLevel.MEDIUM;
-  return Enum.RiskLevel.LOW;
-};
-
-export const getScoreTextClass = (score: number): string => {
-  return getRiskPresentation(getRiskLevelFromScore(score)).textClass;
+export const getScoreTextClass = (riskLevel: Enum.RiskLevel): string => {
+  return getRiskPresentation(riskLevel).textClass;
 };
 
 export const toProgressPercent = (value: number): string => `${value}%`;

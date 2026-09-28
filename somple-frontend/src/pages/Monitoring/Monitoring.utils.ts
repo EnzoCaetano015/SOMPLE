@@ -1,7 +1,7 @@
 import type { GetMonitoring } from "@/api/models/monitoring.types";
 import type { FilterDefinition } from "@/components/FilterBar/FilterBar.types";
 import { formatDateTime, formatPercent, formatRain, formatSpeed } from "@/lib/utils/format.utils";
-import { getRiskLevelFromScore } from "@/lib/utils/risk.utils";
+import { Enum } from "@/api/enums/enum";
 import type { MonitoringViewModel } from "./Monitoring.types";
 
 export const DEFAULT_MONITORING_FILTERS: FilterDefinition[] = [
@@ -54,7 +54,7 @@ export const mapMonitoringViewModel = (
   })),
   rows: data.rows.map((row) => {
     const score = row.score ?? 0;
-    const riskLevel = row.risk_level ?? getRiskLevelFromScore(score);
+    const riskLevel = row.risk_level ?? Enum.RiskLevel.LOW;
     return {
       id: row.id,
       equipment: row.id,

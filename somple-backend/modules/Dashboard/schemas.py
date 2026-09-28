@@ -8,7 +8,10 @@ class DashboardSummary(BaseModel):
     active_alerts: int
     critical_alerts: int
     average_risk_score: int
-    fleet_risk_score: int
+    average_risk_level: str
+    max_risk_score: int
+    max_risk_level: str
+    assessment_count: int
 
 
 class DashboardRankingItem(BaseModel):
@@ -38,9 +41,46 @@ class DashboardRecentAlert(BaseModel):
     risk_level: str
 
 
+class DashboardTrendItem(BaseModel):
+    key: str
+    label: str
+    average_risk_score: int
+    max_risk_score: int
+    assessment_count: int
+    alert_count: int
+
+
+class DashboardTrends(BaseModel):
+    by_equipment: list[DashboardTrendItem]
+    by_region: list[DashboardTrendItem]
+    by_operation_category: list[DashboardTrendItem]
+
+
+class DashboardReport(BaseModel):
+    average_risk_score: int
+    max_risk_score: int
+    assessment_count: int
+    alert_count: int
+    counts_by_level: dict[str, int]
+    evolution: list[RiskEvolutionPoint]
+
+
 class DashboardResponse(BaseModel):
     summary: DashboardSummary
     ranking: list[DashboardRankingItem]
     risk_evolution: list[RiskEvolutionPoint]
     risk_distribution: list[RiskDistributionSlice]
     recent_alerts: list[DashboardRecentAlert]
+    report: DashboardReport
+    trends: DashboardTrends
+
+
+class FilterOption(BaseModel):
+    value: str
+    label: str
+
+
+class DashboardFilterOptions(BaseModel):
+    regions: list[FilterOption]
+    operation_categories: list[FilterOption]
+    operation_types: list[FilterOption]

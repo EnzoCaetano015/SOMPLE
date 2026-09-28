@@ -132,7 +132,7 @@ export const Monitoring = () => {
                       <TableCell className="font-mono-num text-sm">{row.rain}</TableCell>
 
                       <TableCell
-                        className={`font-mono-num text-right text-base font-bold ${getScoreTextClass(row.score)}`}
+                        className={`font-mono-num text-right text-base font-bold ${getScoreTextClass(row.riskLevel)}`}
                       >
                         {row.score}
                       </TableCell>

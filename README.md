@@ -4,7 +4,7 @@ O **SOMPLE** é um protótipo desenvolvido para o Challenge da **Sompo Seguros n
 
 A partir de uma telemetria, o sistema produz **score de risco de 0 a 100**, **nível de risco**, **confiança**, **fatores relevantes**, **recomendação preventiva** e, nos níveis alto ou crítico, um **alerta**. O resultado fica persistido e auditável, permitindo que operadores, gestores e seguradora atuem antes do incidente.
 
-> Este README centraliza a documentação necessária para compreender, executar e avaliar a Sprint 3. Os READMEs internos são complementares.
+> Este README centraliza a documentação, a arquitetura e a validação final do projeto. Os READMEs internos são complementares.
 
 ## Sumário
 
@@ -26,7 +26,7 @@ A partir de uma telemetria, o sistema produz **score de risco de 0 a 100**, **n�
 - [Testes de regressão](#testes-de-regressão)
 - [Implantação na AWS — bônus](#implantação-na-aws--bônus)
 - [Evidências de execução](#evidências-de-execução)
-- [Atendimento aos requisitos da Sprint 3](#atendimento-aos-requisitos-da-sprint-3)
+- [Atendimento aos requisitos](#atendimento-aos-requisitos)
 - [Decisões técnicas](#decisões-técnicas)
 - [Limitações e próximos passos](#limitações-e-próximos-passos)
 - [Checklist de entrega](#checklist-de-entrega)
@@ -75,6 +75,16 @@ Dashboard React
 | Sprint 1 | Estruturar problema, solução, personas, variáveis e arquitetura conceitual | Base conceitual, dataset inicial e regras de risco |
 | Sprint 2 | Desenvolver dados, persistência SQL, modelo e primeira visualização | Dataset simulado, Random Forest Classifier, métricas e dashboard experimental em Streamlit |
 | Sprint 3 | Integrar os componentes em um MVP funcional | FastAPI modular, PostgreSQL, pipeline transacional de inferência, JWT, auditoria, React integrado e Docker Compose |
+| Consolidação final | Reforçar qualidade, confiabilidade e entrega | Idempotência, modelo v1.1.0, política única de risco, relatórios filtráveis, testes ampliados e evidências finais |
+
+### Consolidação final
+
+- domínios categóricos validados e duplicidade bloqueada pelo PostgreSQL;
+- modelo `1.1.0` treinado por pipeline reproduzível, com validação dos dados e SHA-256;
+- score, nível e alertas derivados de uma única política auditável;
+- dashboard e relatórios com período, região e categoria de operação aplicados ao mesmo recorte;
+- opções de filtro carregadas do banco, sem IDs de região hardcoded no dashboard;
+- suíte de regressão ampliada, validação HTTP única e documentação final rastreável.
 
 ### O que mudou da Sprint 2 para a Sprint 3
 
@@ -229,7 +239,7 @@ flowchart LR
 
 ## Modelo de Inteligência Artificial
 
-O artefato atual evolui o trabalho da Sprint 2 e está integrado ao backend como `somple-risk-classifier`, versão `1.0.0`:
+O artefato final evolui o trabalho da Sprint 2 e está integrado ao backend como `somple-risk-classifier`, versão `1.1.0`:
 
 - **Random Forest Classifier** classifica `low`, `medium`, `high` ou `critical`;
 - **Random Forest Regressor** produz o score de 0 a 100.
@@ -240,11 +250,15 @@ O pipeline aplica `OneHotEncoder` às variáveis categóricas e serializa classi
 
 | Métrica | Valor | Interpretação curta |
 | --- | --- | --- |
-| Accuracy | **84,44%** (`0.8444`) | Proporção de classes previstas corretamente no teste |
-| MAE | **7,79 pontos** (`7.7862`) | Erro absoluto médio do score previsto |
-| R² | **0,686** | Parcela da variação do score explicada pelo regressor |
+| Accuracy | **76,67%** (`0.7667`) | Proporção de classes corretas nas previsões fora da amostra |
+| Precisão macro | **0,5057** | Precisão média com o mesmo peso para cada classe |
+| Recall macro | **0,5223** | Cobertura média com o mesmo peso para cada classe |
+| F1 macro | **0,5116** | Equilíbrio entre precisão e recall das classes |
+| MAE | **8,8325 pontos** | Erro absoluto médio do score |
+| RMSE | **11,9401 pontos** | Erro quadrático com maior peso para desvios altos |
+| R² | **0,5945** | Variação do score explicada pelo regressor |
 
-As métricas vêm de `somple-backend/ml/artifacts/somple-risk-classifier-v1.0.0.json` e refletem o dataset `sprint2-v1`.
+As métricas vêm de `somple-backend/ml/artifacts/somple-risk-classifier-v1.1.0.json`, usando previsões fora da amostra em duas divisões estratificadas. O dataset acadêmico possui 180 registros simulados e apenas dois exemplos da classe baixa; os números não representam desempenho em produção.
 
 ### Dados utilizados pelo modelo
 
@@ -267,10 +281,10 @@ O `Explainer` tenta usar SHAP e possui fallback baseado na importância das feat
 
 ```bash
 cd somple-infra
-docker compose --env-file ../.env exec backend python ml/training/train_model.py
+docker compose --env-file ../.env exec backend python -m ml.training.train_model
 ```
 
-O retreinamento substitui o artefato local de versão `1.0.0`. Depois, recrie o backend para carregá-lo em um processo limpo. Para a demonstração normal, o artefato versionado é suficiente.
+O treinamento gera artefato, metadata SHA-256 e relatórios em `ml/training/reports`. A decisão técnica e as limitações estão em [`docs/MODEL.md`](docs/MODEL.md).
 
 ## Engenharia de dados e PostgreSQL
 
@@ -532,13 +546,19 @@ $env:TEST_DATABASE_URL="postgresql://somple_test:somple_test@localhost:5433/somp
 pytest -q
 ```
 
-A suíte recusa bancos cujo nome não contenha `test`. Ela cobre login e auditoria, `401`/`403`,
-perfis, pipeline de telemetria, persistência de assessments/alertas/auditoria e o cliente HTTP do
-simulador. No frontend, execute `vp check`, `vp test` e `vp run build` dentro de `somple-frontend`.
+A suíte recusa bancos cujo nome não contenha `test`. Ela cobre login, `401`/`403`, idempotência,
+rollback, política de risco, integridade do modelo, filtros do dashboard, assessments, alertas,
+auditoria e o simulador. No frontend, execute `vp check`, `vp test` e `vp run build`.
 
-Em 07/09/2026, a execução local registrou `53 passed` no backend, 3 testes aprovados no frontend,
-check sem erros e build concluído. Os avisos remanescentes são quatro avisos preexistentes de Fast
-Refresh e o aviso de tamanho do chunk principal.
+Com o ambiente completo em execução, valide o contrato público de ponta a ponta:
+
+```bash
+docker compose exec backend python -m scripts.validate_mvp
+```
+
+Em 26/09/2026, a validação final registrou `81 passed` no backend e 7 testes aprovados no
+frontend. O check e o build foram concluídos; permaneceram quatro avisos preexistentes de Fast
+Refresh e o aviso não bloqueante de tamanho do chunk principal.
 
 ### Parando o projeto
 
@@ -558,7 +578,7 @@ docker compose --env-file ../.env up -d --build
 docker compose --env-file ../.env exec backend python -m scripts.create_demo_data
 ```
 
-No volume novo, o PostgreSQL executa automaticamente `001_schema.sql`, `002_indexes.sql`, `003_views.sql` e `004_frontend_views.sql`. Em volume existente, editar uma migration não a reaplica.
+No volume novo, o PostgreSQL executa automaticamente as migrations `001` a `006`. Em volume existente, aplique as migrations incrementais `005_telemetry_idempotency.sql` e `006_model_v1_1.sql`; migrations antigas não são reescritas.
 
 ## Implantação na AWS — bônus
 
@@ -610,6 +630,13 @@ As seis capturas pós-Sprint 3 ficam em `docs/evidencias/funcional`. O
 e resultado observado para dashboard, monitoramento, assessment com explicabilidade, alerta crítico,
 auditoria do pipeline e login inválido. Todos os PNGs foram capturados do sistema local em execução.
 
+### Dashboard e filtros
+
+As cinco capturas atuais em [`docs/evidencias/dashboard-relatorios`](docs/evidencias/dashboard-relatorios/)
+registram os cenários normal, elevado, próximo à água, transporte e filtro pelo Talhão Norte.
+As imagens foram produzidas pelo ambiente Docker isolado e mostram os filtros, KPIs, ranking e
+relatório consolidado calculados pela API.
+
 ### Aplicação hospedada na AWS
 
 <p align="center">
@@ -652,23 +679,22 @@ auditoria do pipeline e login inválido. Todos os PNGs foram capturados do siste
 
 > **Figura 6 — AWS Academy Learner Lab utilizado para provisionamento e execução da infraestrutura da Sprint 3.**
 
-## Atendimento aos requisitos da Sprint 3
+## Atendimento aos requisitos
 
-| Requisito | Implementação confirmada |
-| --- | --- |
-| Backend integrador | FastAPI modular sob `/api/v1` |
-| Banco de dados | PostgreSQL com schema, índices e views |
-| Pipeline de dados | Transação de telemetria até auditoria |
-| Integração com modelo | Runtime Joblib com classificador e regressor |
-| Telemetria | Endpoint autenticado e persistência |
-| Validação | Pydantic, regras de service e constraints SQL |
-| Segurança | JWT, Bearer, Argon2, CORS e rotas protegidas |
-| Auditoria | Snapshots, versão do modelo e `audit_logs` |
-| Dashboard | React integrado às APIs |
-| Docker | Compose local com frontend, backend e banco |
-| Documentação | README centralizado |
-| Arquitetura | Frontend/backend/infra e router/service/repository |
-| AWS | Implantação adicional do MVP comprovada em Amazon EC2 no AWS Academy |
+| Requisito | Implementação | Evidência |
+| --- | --- | --- |
+| Arquitetura | Fluxo real e sequência em Mermaid | [`ARCHITECTURE.md`](docs/architecture/ARCHITECTURE.md) |
+| Exceções e qualidade | Erros controlados, domínios e rollback | [`qualidade-dados`](docs/evidencias/qualidade-dados/) |
+| Duplicidades | Constraint incremental e resposta `409` | [`005_telemetry_idempotency.sql`](somple-infra/database/migrations/005_telemetry_idempotency.sql) |
+| Modelo | Artefato v1.1.0, métricas e SHA-256 | [`modelo`](docs/evidencias/modelo/) |
+| Score e alertas | Política `score-thresholds-v1` | [`score-alertas`](docs/evidencias/score-alertas/) |
+| Integração | Telemetria até dashboard e auditoria | [`fluxo-ponta-a-ponta`](docs/evidencias/fluxo-ponta-a-ponta/) |
+| Segurança e RBAC | JWT, Argon2, matriz e logs sanitizados | [`seguranca`](docs/evidencias/seguranca/) |
+| Relatórios e filtros | Período, região e categoria no mesmo recorte | [`dashboard-relatorios`](docs/evidencias/dashboard-relatorios/) |
+| Testes | Backend, frontend, build e validação HTTP | [`testes`](docs/evidencias/testes/) |
+| Evidências | Pacote organizado e reproduzível | [`docs/evidencias`](docs/evidencias/) |
+| Validação final | Testes e validação integrada do MVP | [`testes`](docs/evidencias/testes/) |
+| Vídeo | Demonstração final gravada e publicada | [YouTube](https://youtu.be/yVtvQo3MV7s) |
 
 ## Decisões técnicas
 
@@ -700,7 +726,7 @@ Para o MVP, o runtime permanece no FastAPI. Um microsserviço separado adicionar
 - O logout não possui blacklist/revogação de JWT no servidor.
 - Alertas não disparam notificações externas.
 - Drift, monitoramento e retreinamento não estão automatizados.
-- A implantação acadêmica usa HTTP diretamente pelo IPv4 público da EC2
+- A implantação acadêmica usa HTTP diretamente pelo IPv4 público da EC2.
 - Georreferenciamento, tempo real e histórico real de sinistros podem ampliar o MVP.
 
 ## Checklist de entrega
@@ -722,9 +748,16 @@ Para o MVP, o runtime permanece no FastAPI. Um microsserviço separado adicionar
 - [x] Testes de regressão
 - [x] Checklist de evidências funcionais reais
 - [x] Implantação AWS Academy / EC2 documentada
+- [x] Idempotência da telemetria
+- [x] Modelo final v1.1.0 com integridade SHA-256
+- [x] Política única de score, nível e alerta
+- [x] Dashboard com filtros consistentes e relatório consolidado
+- [x] Arquitetura e matriz de acesso consolidadas
+- [x] Vídeo final gravado e publicado
 
 ## Vídeo de demonstração
 
 - Sprint 1 — [https://www.youtube.com/watch?v=04eJA7Vp_PU](https://www.youtube.com/watch?v=04eJA7Vp_PU)
 - Sprint 2 — [https://www.youtube.com/watch?v=06a06tTTZ3s](https://www.youtube.com/watch?v=06a06tTTZ3s)
 - Sprint 3 — [https://www.youtube.com/watch?v=YHfipkk08CA](https://www.youtube.com/watch?v=YHfipkk08CA)
+- Vídeo final — [https://youtu.be/yVtvQo3MV7s](https://youtu.be/yVtvQo3MV7s)

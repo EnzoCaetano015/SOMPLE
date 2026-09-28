@@ -1,0 +1,20 @@
+services:
+  db:
+    container_name: somple-validation-db
+    ports: !override
+      - "15432:5432"
+
+  backend:
+    container_name: somple-validation-backend
+    environment:
+      CORS_ORIGINS: http://localhost:18080
+    ports: !override
+      - "18000:8000"
+
+  frontend:
+    container_name: somple-validation-frontend
+    build:
+      args:
+        VITE_API_BASE_URL: http://localhost:18000/api/v1
+    ports: !override
+      - "18080:80"
