@@ -77,7 +77,7 @@ A partir da raiz, no PowerShell:
 ```powershell
 cd somple-infra
 docker compose -f docker-compose.test.yml up -d --wait
-cd ../somple-backend
+cd ../somple-backenda
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -r requirements-dev.txt
